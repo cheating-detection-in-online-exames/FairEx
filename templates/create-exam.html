@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FairEx — Create Exam</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/create-exam.css') }}">
+</head>
+<body>
+<nav id="nav">
+  <a class="lgo" href="{{ url_for('index') }}">
+    <img id="nav-logo" alt="FairEx">
+    <div><span class="lgo-nm">FairEx</span><span class="lgo-sub">Education</span></div>
+  </a>
+  <ul class="nl"><li><a href="{{ url_for('index') }}">Home</a></li></ul>
+  <div class="na">
+    <button id="themeToggle" onclick="toggleTheme()"><span id="themeIcon">☀️</span><span id="themeLabel">Light</span></button>
+    <button class="nb nb-o" onclick="window.location='{{ url_for('logout') }}'">Logout</button>
+  </div>
+</nav>
+
+<input type="hidden" id="inp-exam-id" value="">
+
+<div style="padding-top:64px;min-height:100vh">
+  <div class="dlayout">
+    <div class="dsb">
+      <div class="dsb-u"><img class="all-logo" alt="FairEx"><div class="dsb-av av-r">{{ teacher_name[0]|upper }}</div><div class="dsb-nm">{{ teacher_name }}</div><div class="dsb-rl">Professor · CS Dept.</div></div>
+      <div class="dsb-lbl">Management</div>
+      <div class="dsi" onclick="window.location='{{ url_for('admin_dashboard') }}'"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Dashboard</div>
+      <div class="dsi on" onclick="window.location='create-exam.html'"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg> Create Exam</div>
+      <div class="dsi" onclick="window.location='{{ url_for('report') }}'"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Reports</div>
+      <div class="dsi" onclick="window.location='{{ url_for('logout') }}'"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg> Logout</div>
+    </div>
+
+    <div class="dmain">
+      <div class="dgreet">Doctor Panel</div>
+      <div class="dtitle">Create New Exam</div>
+      <div class="create-layout">
+
+        <!-- LEFT COLUMN -->
+        <div>
+          <!-- Exam Info -->
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:18px">
+            <div class="dsec" style="margin-bottom:18px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2d5be3" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Exam Information</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+              <div class="fg"><div class="fl">Exam Title</div><div class="fi-w"><span class="fi-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg></span><input id="inp-title" class="fi" placeholder="e.g. Data Structures Final Exam"></div></div>
+              <div class="fg"><div class="fl">Course Code</div><div class="fi-w"><span class="fi-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></span><input id="inp-course" class="fi" placeholder="e.g. CS301"></div></div>
+              <div class="fg"><div class="fl">Department</div><div class="fi-w"><span class="fi-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span><select id="inp-dept" class="fi"><option value="Computer Science">Computer Science</option>
+      <option value="Scientific Computing">Scientific Computing</option>
+      <option value="Information System">Information System</option>
+      <option value="Computer Systems">Computer Systems</option>
+              <option value="General">General</option></select></div></div>
+              <div class="fg"><div class="fl">Level</div><div class="fi-w"><span class="fi-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><select id="inp-level" class="fi"><option value="1">Level 1</option><option value="2">Level 2</option><option value="3" selected>Level 3</option><option value="4">Level 4</option></select></div></div>
+              <div class="fg"><div class="fl">Start Date &amp; Time</div><div class="fi-w"><span class="fi-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span><input id="inp-start" class="fi" type="datetime-local"></div></div>
+              <div class="fg"><div class="fl">Duration (minutes)</div><div class="fi-w"><span class="fi-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span><input id="inp-duration" class="fi" type="number" value="90" min="10" max="300"></div></div>
+              <div class="fg"><div class="fl">Total Marks</div><div class="fi-w"><span class="fi-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg></span><input id="inp-marks" class="fi" type="number" value="100"></div></div>
+              <div class="fg"><div class="fl">Passing Score (%)</div><div class="fi-w"><span class="fi-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></span><input id="inp-pass" class="fi" type="number" value="60" min="0" max="100"></div></div>
+            </div>
+          </div>
+
+          <!-- Instructions -->
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:18px">
+            <div class="dsec" style="margin-bottom:18px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2d5be3" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Exam Instructions</div>
+            <div class="fg"><div class="fl">Instructions shown to students before exam starts</div><textarea id="inp-instructions" class="fi" style="padding-left:13px;min-height:110px;line-height:1.7">1. Make sure your webcam and microphone are working before starting.
+2. You are NOT allowed to use any external resources or devices.
+3. Do not switch tabs or minimize the browser window during the exam.
+4. Keep your face visible in the webcam at all times.
+5. Any suspicious behavior will be flagged and reviewed by the instructor.
+6. Once submitted, answers cannot be changed.</textarea></div>
+            <div class="fg" style="margin-bottom:0"><div class="fl">Warning Message (shown when cheating detected)</div><textarea id="inp-warning" class="fi" style="padding-left:13px;min-height:70px;line-height:1.7;border-color:rgba(230,126,34,.3)">⚠ Warning: Suspicious behavior has been detected. This incident has been recorded. Continued violations may result in exam termination.</textarea></div>
+          </div>
+
+          <!-- Objects -->
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:18px">
+            <div class="dsec" style="margin-bottom:6px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2d5be3" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> Allowed &amp; Forbidden Objects</div>
+            <p style="font-size:12px;color:var(--muted);margin-bottom:16px">Click each item to toggle between <span style="color:#5dde8a;font-weight:600">Allowed ✓</span> and <span style="color:#ff7675;font-weight:600">Forbidden ✗</span></p>
+            <div class="obj-grid" id="objGrid">
+              <div class="obj-item forbidden" data-name="watch"      onclick="toggleObj(this)"><div class="obj-dot" style="background:#ff7675"></div><span>⌚ Smart Watch</span></div>
+              <div class="obj-item forbidden" data-name="sunglass"   onclick="toggleObj(this)"><div class="obj-dot" style="background:#ff7675"></div><span>🕶️ Sunglasses</span></div>
+              <div class="obj-item allowed"   data-name="calculator" onclick="toggleObj(this)"><div class="obj-dot" style="background:#5dde8a"></div><span>🧮 Calculator</span></div>
+              <div class="obj-item forbidden" data-name="mobile"     onclick="toggleObj(this)"><div class="obj-dot" style="background:#ff7675"></div><span>📱 Mobile Phone</span></div>
+              <div class="obj-item forbidden" data-name="headphones" onclick="toggleObj(this)"><div class="obj-dot" style="background:#ff7675"></div><span>🎧 Headphones</span></div>
+              <div class="obj-item forbidden" data-name="earbuds"    onclick="toggleObj(this)"><div class="obj-dot" style="background:#ff7675"></div><span>🎙️ Earbuds</span></div>
+              <div class="obj-item forbidden" data-name="face_mask"  onclick="toggleObj(this)"><div class="obj-dot" style="background:#ff7675"></div><span>😷 Face Mask</span></div>
+              <div class="obj-item allowed"   data-name="book"       onclick="toggleObj(this)"><div class="obj-dot" style="background:#5dde8a"></div><span>📚 Book</span></div>
+              <div class="obj-item forbidden" data-name="laptop"     onclick="toggleObj(this)"><div class="obj-dot" style="background:#ff7675"></div><span>💻 Laptop</span></div>
+            </div>
+          </div>
+
+          <!-- Questions -->
+          <div id="qlist"></div>
+          <button class="add-q-btn" onclick="addQ()">+ Add Question</button>
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div style="position:sticky;top:80px">
+          <div class="sidebar-panel">
+            <div class="sp-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2d5be3" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Proctoring Settings</div>
+            <div class="rule-row"><div class="rule-info"><div class="rule-title">Webcam Monitoring</div><div class="rule-desc">Record student during exam</div></div><div class="toggle on" id="proc-webcam" onclick="this.classList.toggle('on')"></div></div>
+            <div class="rule-row"><div class="rule-info"><div class="rule-title">Face Detection</div><div class="rule-desc">Verify student identity</div></div><div class="toggle on" id="proc-face" onclick="this.classList.toggle('on')"></div></div>
+            <div class="rule-row"><div class="rule-info"><div class="rule-title">Eye Gaze Tracking</div><div class="rule-desc">Detect looking away</div></div><div class="toggle on" id="proc-gaze" onclick="this.classList.toggle('on')"></div></div>
+            <div class="rule-row"><div class="rule-info"><div class="rule-title">Audio Monitoring</div><div class="rule-desc">Detect background voices</div></div><div class="toggle on" id="proc-audio" onclick="this.classList.toggle('on')"></div></div>
+            <div class="rule-row"><div class="rule-info"><div class="rule-title">Tab Switch Detection</div><div class="rule-desc">Detect leaving exam window</div></div><div class="toggle on" id="proc-tab" onclick="this.classList.toggle('on')"></div></div>
+            <div class="rule-row"><div class="rule-info"><div class="rule-title">Phone Detection (YOLO)</div><div class="rule-desc">AI object detection</div></div><div class="toggle on" id="proc-phone" onclick="this.classList.toggle('on')"></div></div>
+            <div class="rule-row"><div class="rule-info"><div class="rule-title">Multiple Face Detection</div><div class="rule-desc">Detect unauthorized persons</div></div><div class="toggle on" id="proc-multiface" onclick="this.classList.toggle('on')"></div></div>
+            <!-- NEW: One-Way Exam Toggle -->
+            <div class="rule-row"><div class="rule-info"><div class="rule-title">One-Way Exam (Linear)</div><div class="rule-desc">Students cannot go back to previous questions</div></div><div class="toggle off" id="proc-oneway" onclick="this.classList.toggle('on')"></div></div>
+          </div>
+          <div class="sidebar-panel">
+            <div class="sp-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2d5be3" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> Exam Summary</div>
+            <div style="display:flex;flex-direction:column;gap:8px;font-size:13px">
+              <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Questions</span><span style="color:var(--white);font-weight:600" id="sumQ">1</span></div>
+              <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Total Marks</span><span style="color:var(--white);font-weight:600">100</span></div>
+              <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Duration</span><span style="color:var(--white);font-weight:600">90 min</span></div>
+              <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Passing Score</span><span style="color:#5dde8a;font-weight:600">60%</span></div>
+              <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Cheating Threshold</span><span style="color:var(--warn);font-weight:600">60 pts</span></div>
+            </div>
+          </div>
+          <div class="sidebar-panel">
+            <div class="sp-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2d5be3" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> Actions</div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <button class="nb nb-f" style="width:100%;justify-content:center;display:flex;padding:13px;font-size:15px" onclick="collectAndSave('publish')">🚀 Publish Exam</button>
+              <button class="nb nb-o" style="width:100%;justify-content:center;display:flex;padding:11px" onclick="collectAndSave('draft')">💾 Save as Draft</button>
+              <button style="width:100%;padding:11px;border-radius:8px;border:1px solid rgba(45,91,227,.25);background:rgba(45,91,227,.06);color:#6b93ff;cursor:pointer;font-family:'Poppins',sans-serif;font-size:13px;font-weight:600" onclick="previewExam()">👁️ Preview Exam</button>
+              <button style="width:100%;padding:11px;border-radius:8px;border:1px solid rgba(231,76,60,.25);background:transparent;color:#ff7675;cursor:pointer;font-family:'Poppins',sans-serif;font-size:13px;font-weight:600" onclick="window.location='{{ url_for('admin_dashboard') }}'">&#8592; Discard &amp; Back</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/base.js') }}"></script>
+<script src="{{ url_for('static', filename='js/create-exam.js') }}"></script>
+</body>
+</html>

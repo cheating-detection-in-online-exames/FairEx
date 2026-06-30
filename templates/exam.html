@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ exam.title }} — FairEx</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+<style>
+  .exam-wrap{max-width:760px;margin:84px auto 40px;padding:0 20px}
+  .exam-header{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px 26px;margin-bottom:22px}
+  .exam-title{font-size:22px;font-weight:700;color:var(--white);margin-bottom:6px}
+  .exam-meta{font-size:13px;color:var(--muted);display:flex;gap:20px;flex-wrap:wrap}
+  .timer-box{background:rgba(231,76,60,.1);border:1px solid rgba(231,76,60,.25);border-radius:10px;padding:10px 18px;display:flex;align-items:center;gap:9px;font-size:15px;font-weight:700;color:#ff7675;margin-left:auto}
+  .q-card{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:22px 24px;margin-bottom:16px}
+  .q-label{font-size:11px;font-weight:600;color:var(--blue);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .q-text{font-size:15px;color:var(--white);font-weight:500;margin-bottom:18px;line-height:1.6}
+  .opt-btn{display:flex;align-items:center;gap:13px;padding:12px 16px;border-radius:10px;border:1px solid var(--border);background:transparent;width:100%;cursor:pointer;font-family:'Poppins',sans-serif;font-size:14px;color:var(--text);text-align:left;margin-bottom:9px;transition:all .2s}
+  .opt-btn:hover{background:rgba(45,91,227,.07);border-color:rgba(45,91,227,.3)}
+  .opt-btn.selected{background:rgba(45,91,227,.12);border-color:var(--blue);color:var(--white)}
+  .opt-circle{width:26px;height:26px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;color:var(--blue)}
+  .opt-btn.selected .opt-circle{background:var(--blue);border-color:var(--blue);color:#fff}
+  .short-inp{width:100%;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:'Poppins',sans-serif;font-size:14px;outline:none;resize:vertical;min-height:80px}
+  .short-inp:focus{border-color:var(--blue)}
+  .submit-bar{position:sticky;bottom:0;background:var(--bg);border-top:1px solid var(--border);padding:14px 0;margin-top:8px;text-align:center}
+  /* CV monitoring UI */
+  #camera-box{position:fixed;bottom:20px;right:20px;width:220px;height:160px;border:2px solid var(--blue);border-radius:10px;overflow:hidden;background:black;z-index:999}
+  #exam-video{width:100%;height:100%;object-fit:cover}
+  #monitor-panel{position:fixed;top:80px;right:20px;background:var(--card);border:1px solid var(--border);padding:12px 16px;border-radius:10px;font-size:13px;color:var(--text);z-index:999;min-width:180px}
+</style>
+</head>
+<body>
+<nav id="nav">
+  <a class="lgo" href="{{ url_for('index') }}">
+    <img id="nav-logo" alt="FairEx">
+    <div><span class="lgo-nm">FairEx</span><span class="lgo-sub">Education</span></div>
+  </a>
+  <ul class="nl"></ul>
+  <div class="na">
+    <div class="timer-box">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span id="countdown">{{ duration }}:00</span>
+    </div>
+    <button id="themeToggle" onclick="toggleTheme()"><span id="themeIcon">☀️</span><span id="themeLabel">Light</span></button>
+  </div>
+</nav>
+
+<div class="exam-wrap">
+  <div class="exam-header">
+    <div class="exam-title">{{ exam.title }}</div>
+    <div class="exam-meta">
+      <span>📋 {{ exam.course_code }}</span>
+      <span>⏱ {{ exam.duration_mins }} minutes</span>
+      <span>🏆 {{ exam.total_marks }} marks</span>
+      <span>✅ Pass at {{ exam.passing_score }}%</span>
+    </div>
+    {% if exam.instructions %}
+    <div style="margin-top:14px;padding:14px;background:rgba(45,91,227,.07);border-radius:9px;font-size:13px;color:var(--muted);line-height:1.8;white-space:pre-line">{{ exam.instructions }}</div>
+    {% endif %}
+  </div>
+
+  <form method="POST" action="{{ url_for('submit_exam', exam_id=exam.id) }}" id="examForm" onsubmit="return confirmSubmit()">
+    {% for item in questions %}
+    {% set q = item.q %}
+    {% set opts = item.opts %}
+    <div class="q-card">
+      <div class="q-label">Question {{ loop.index }} · {{ q.points }} pt{% if q.points != 1 %}s{% endif %}</div>
+      <div class="q-text">{{ q.question_text }}</div>
+
+      {% if q.question_type == 'short' %}
+        <textarea class="short-inp" name="q_{{ q.id }}" placeholder="Type your answer here..."></textarea>
+
+      {% elif q.question_type == 'truefalse' %}
+        <button type="button" class="opt-btn" onclick="pickOpt(this, 'q_{{ q.id }}', '{{ opts[0].id if opts else '' }}')">
+          <div class="opt-circle">T</div> True
+        </button>
+        <button type="button" class="opt-btn" onclick="pickOpt(this, 'q_{{ q.id }}', '{{ opts[1].id if opts|length > 1 else '' }}')">
+          <div class="opt-circle">F</div> False
+        </button>
+        <input type="hidden" name="q_{{ q.id }}" id="hidden_q_{{ q.id }}">
+
+      {% else %}
+        {% for opt in opts %}
+        <button type="button" class="opt-btn" onclick="pickOpt(this, 'q_{{ q.id }}', '{{ opt.id }}')">
+          <div class="opt-circle">{{ opt.label }}</div> {{ opt.text }}
+        </button>
+        {% endfor %}
+        <input type="hidden" name="q_{{ q.id }}" id="hidden_q_{{ q.id }}">
+      {% endif %}
+    </div>
+    {% endfor %}
+
+    <div class="submit-bar">
+      <button type="submit" class="nb nb-f" style="padding:14px 40px;font-size:15px">✅ Submit Exam</button>
+    </div>
+  </form>
+</div>
+
+<!-- Webcam box (fixed bottom-right) -->
+<div id="camera-box">
+  <video id="exam-video" autoplay muted></video>
+</div>
+
+<!-- Monitor panel (fixed top-right) -->
+<div id="monitor-panel">
+  Voice: Initializing...<br>
+  Suspicious Count: <span id="suspicious-count">0</span>
+</div>
+
+<script src="{{ url_for('static', filename='js/base.js') }}"></script>
+<script>
+  // ==========================
+  // OPTION PICKER (MCQ / T-F)
+  // ==========================
+  function pickOpt(btn, qname, optId) {
+    var card = btn.closest('.q-card');
+    card.querySelectorAll('.opt-btn').forEach(function(b) { b.classList.remove('selected'); });
+    btn.classList.add('selected');
+    var hidden = document.getElementById('hidden_' + qname);
+    if (hidden) hidden.value = optId;
+  }
+
+  // ==========================
+  // COUNTDOWN TIMER
+  // ==========================
+  var totalSecs = {{ duration }} * 60;
+  var timerEl = document.getElementById('countdown');
+  var timerInterval = setInterval(function() {
+    totalSecs--;
+    if (totalSecs <= 0) {
+      clearInterval(timerInterval);
+      document.getElementById('examForm').submit();
+      return;
+    }
+    var m = Math.floor(totalSecs / 60);
+    var s = totalSecs % 60;
+    timerEl.textContent = m + ':' + (s < 10 ? '0' : '') + s;
+    if (totalSecs <= 300) timerEl.style.color = '#e74c3c';
+  }, 1000);
+
+  function confirmSubmit() {
+    return confirm('Are you sure you want to submit? You cannot change your answers after submission.');
+  }
+
+  window.addEventListener('beforeunload', function(e) {
+    e.preventDefault(); e.returnValue = '';
+  });
+
+  document.getElementById('examForm').addEventListener('submit', function() {
+    window.removeEventListener('beforeunload', function() {});
+  });
+
+  document.addEventListener('DOMContentLoaded', function() { applyTheme(currentTheme); setLogos(); });
+
+  // ==========================
+  // CAMERA
+  // ==========================
+  var examVideo = document.getElementById('exam-video');
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then(function(stream) { examVideo.srcObject = stream; })
+    .catch(function() { console.warn('Camera access denied'); });
+
+  // ==========================
+  // MICROPHONE MONITORING
+  // ==========================
+  var mediaRecorder;
+  var audioChunks = [];
+  var suspiciousCount = 0;
+
+  navigator.mediaDevices.getUserMedia({ audio: true })
+  .then(function(stream) {
+    mediaRecorder = new MediaRecorder(stream);
+    mediaRecorder.ondataavailable = function(e) { audioChunks.push(e.data); };
+    mediaRecorder.onstop = function() {
+      var blob = new Blob(audioChunks, { type: 'audio/webm' });
+      audioChunks = [];
+      var fd = new FormData();
+      fd.append('audio_data', blob);
+      fetch('/analyze_audio', { method: 'POST', body: fd })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data.status === 'no_speech') {
+            updateVoiceStatus('No speech detected', 'gray');
+          } else if (data.status === 'same_speaker') {
+            updateVoiceStatus('Student speaking', 'green');
+          } else if (data.status === 'different_speaker') {
+            suspiciousCount++;
+            document.getElementById('suspicious-count').innerText = suspiciousCount;
+            updateVoiceStatus('⚠ Different speaker!', 'red');
+            showNotification('Suspicious voice detected!', 'red');
+            if (suspiciousCount >= 5) {
+              showNotification('Exam terminated due to suspicious activity!', 'black');
+              setTimeout(function() { document.getElementById('examForm').submit(); }, 2000);
+            }
+          }
+        });
+    };
+    setInterval(function() {
+      mediaRecorder.start();
+      setTimeout(function() {
+        if (mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+      }, 5000);
+    }, 7000);
+  })
+  .catch(function() { updateVoiceStatus('Microphone denied!', 'red'); });
+
+  // ==========================
+  // CV FRAME ANALYSIS
+  // ==========================
+  async function sendFrameToCV() {
+    var canvas = document.createElement('canvas');
+    canvas.width  = examVideo.videoWidth;
+    canvas.height = examVideo.videoHeight;
+    canvas.getContext('2d').drawImage(examVideo, 0, 0);
+    canvas.toBlob(async function(blob) {
+      var fd = new FormData();
+      fd.append('frame', blob, 'frame.jpg');
+fd.append('exam_id', '{{ exam.id }}');
+      try {
+        var res  = await fetch('/analyze_frame', { method: 'POST', body: fd });
+        var data = await res.json();
+        if (data.violations && data.violations.length > 0)
+          data.violations.forEach(function(v) {
+            showNotification('⚠ Forbidden item: ' + v.object + ' (' + (v.confidence*100).toFixed(0) + '%)', 'red');
+          });
+        if (data.gaze && data.gaze !== '')
+          showNotification('👀 Suspicious gaze: ' + data.gaze + ' (' + data.gaze_duration + 's)', 'orange');
+        if (data.hand_sign)    showNotification('🖐 Hand signal detected!', 'red');
+        if (data.extra_person) showNotification('👥 Extra person detected!', 'red');
+        if (data.out_of_frame) showNotification('❌ Student left frame!', 'orange');
+        if (data.leaning)      showNotification('↗ Suspicious leaning!', 'orange');
+      } catch(e) { console.warn('CV service unreachable:', e); }
+    }, 'image/jpeg', 0.7);
+  }
+  setInterval(sendFrameToCV, 2000);
+
+  // Tell CV service to close session when exam submitted
+  document.getElementById('examForm').addEventListener('submit', function() {
+    fetch('/end_exam_cv', { method: 'POST' });
+  });
+
+  // ==========================
+  // HELPER FUNCTIONS
+  // ==========================
+  function updateVoiceStatus(text, color) {
+    document.getElementById('monitor-panel').innerHTML =
+      'Voice: <span style="color:' + color + '">' + text + '</span><br>' +
+      'Suspicious Count: <span id="suspicious-count">' + suspiciousCount + '</span>';
+  }
+
+  var alertSoundCount = 0;
+function showNotification(message, color) {
+    if (alertSoundCount < 3) {
+        var beep = new Audio('data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+        beep.play().catch(function(){});
+        alertSoundCount++;
+    }
+    var notif = document.createElement('div');
+    notif.innerText = message;
+    notif.style.cssText = 'position:fixed;bottom:200px;left:50%;transform:translateX(-50%);padding:14px 24px;background:' + color + ';color:white;font-weight:700;border-radius:10px;z-index:9999;font-family:Poppins,sans-serif;font-size:14px';
+    document.body.appendChild(notif);
+    setTimeout(function() { notif.remove(); }, 2500);
+}
+
+</script>
+</body>
+</html>

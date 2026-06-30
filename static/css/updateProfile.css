@@ -1,0 +1,131 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+:root {
+    --primary-color: #490606;
+    --secondary-color: #D10024;
+    --font: #555555;
+}
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background:var(--primary-color);
+    padding: 10px;
+}
+.container{
+    max-width: 100%;
+    
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    padding: 5px;
+}
+.signUp{
+    width: 40%;
+}
+form{
+    width: 100%;
+    margin: 40px auto;
+    gap: 5px;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+    
+}
+h1{
+    color: var(--font);
+    margin: 20px;
+    font-weight: bolder;
+    text-transform: uppercase;
+    color: #490606;
+    width: 100%;
+}
+
+p{
+    text-align: center;
+    margin: 10px;
+}
+hr{
+    border-top: 2px solid var(--font);
+}
+.pic{
+    margin: 140px 40px 0px 0px;
+    text-align: center;
+    width: 350px;
+    align-items: center;
+}
+.pic img{
+    width: 300px;
+    height:  300px;
+    border-radius: 50%;
+}
+
+form label{
+    color: var(--font);
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 5px;
+}
+input{
+    width: 90%;
+    margin: 2px;
+    border: none;
+    outline: none;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid gray;
+}
+button{
+    border: none;
+    outline: none;
+    padding: 8px;
+    width: 252px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+    border-radius: 5px;
+    background: var(--primary-color);
+
+
+}
+.photo-button{
+    width: 150px;
+}
+button:hover{
+    background: var(--secondary-color);
+}
+
+.submit {
+
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+
+}
+
+input[type="file"] {
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+:disabled {
+
+    color: gray;
+    cursor: not-allowed;
+}

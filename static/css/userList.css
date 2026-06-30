@@ -1,0 +1,109 @@
+/* Import Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  outline: none;
+  border: none;
+  text-decoration: none;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif; /* Updated to match imported font */
+}
+
+:root {
+  --primary-color: #b20202;
+  --secondary-color: #D10024;
+  --font: #555555;
+  /* --background-color: #E2E2E2;
+  --white-color: #fff;
+  --table-border-color: #ddd; */
+}
+
+body {
+  background: rgb(226, 226, 226);
+  /* color: var(--font); */
+}
+
+h1 {
+  color: var(--primary-color);
+  /* font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-align: center; */
+}
+
+.container {
+  display: block;
+  /* width: 90%;
+  max-width: 1200px; */
+  margin: 0 50px;
+  /* padding: 20px;
+  background: var(--white-color);
+  border-radius: 12px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1); */
+}
+
+.table {
+  /* width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 16px;
+  text-align: center; */
+
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 15px;
+  min-width: 100%;
+  overflow: hidden;
+  border-radius: 5px 5px 0 0;
+  text-align: center;
+}
+
+.table thead {
+  /* background: var(--primary-color);
+  color: var(--white-color);
+} */
+text-align: center;
+color: #fff;
+background: var(--primary-color);
+text-align: left;
+font-weight: bold;
+}
+
+.table th,
+.table td {
+  padding: 12px 15px;
+  /* border: 1px solid var(--table-border-color); */
+  text-align: center;
+}
+
+.table tbody tr:nth-of-type(odd) {
+  background: #f9f9f9;
+  /* border-bottom: 1px solid #ddd; */
+  
+
+}
+
+.table tbody tr:hover {
+  background: #f1f1f1;
+}
+
+/* .table img {
+  border-radius: 50%;
+} */
+
+.table button {
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  background: transparent;
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+  transition: all 0.3s ease;
+}
+
+.table button:hover {
+  background: var(--primary-color);
+  color: var(--white-color);
+}

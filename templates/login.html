@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | FairEx</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #2d5be3; --blue2: #1e46c9;
+      --card: rgba(255,255,255,.06); --border: rgba(255,255,255,.12);
+      --text: #e8eaf0; --muted: rgba(200,210,235,.55); --white: #ffffff;
+    }
+    body { font-family: 'Poppins', sans-serif; background: #050a16; color: var(--text); min-height: 100vh; }
+
+    /* NAV */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 64px; display: flex; align-items: center; justify-content: space-between; padding: 0 28px;
+      background: rgba(5,10,22,.82); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .lgo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .lgo-nm  { display: block; font-size: 16px; font-weight: 700; color: var(--white); line-height: 1.1; }
+    .lgo-sub { display: block; font-size: 10px; font-weight: 500; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; }
+    .nl { list-style: none; display: flex; gap: 4px; }
+    .nl a { color: var(--muted); text-decoration: none; font-size: 13px; font-weight: 500; padding: 6px 12px; border-radius: 8px; transition: color .2s, background .2s; }
+    .nl a:hover { color: var(--white); background: rgba(255,255,255,.07); }
+    .na { display: flex; align-items: center; gap: 10px; }
+    #themeToggle {
+      display: flex; align-items: center; gap: 6px; padding: 7px 13px; border-radius: 8px;
+      background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+      color: var(--muted); font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; transition: all .2s;
+    }
+    #themeToggle:hover { background: rgba(255,255,255,.1); color: var(--white); }
+    .nb-signup {
+      padding: 8px 18px; border-radius: 9px; font-family: 'Poppins', sans-serif;
+      font-size: 13px; font-weight: 600; cursor: pointer; background: var(--blue); border: none; color: white; transition: all .2s;
+    }
+    .nb-signup:hover { background: var(--blue2); }
+
+    /* LOGO INVERT LOGIC */
+    .gc-logo img, .lgo img { filter: brightness(0) invert(1); } /* White in dark mode */
+    [data-theme="light"] .gc-logo img, [data-theme="light"] .lgo img { filter: none; } /* Normal in light mode */
+
+    /* PAGE */
+    .auth-wrap {
+      min-height: 100vh; padding-top: 64px; position: relative;
+      display: flex; align-items: center; justify-content: center; overflow: hidden;
+    }
+    .auth-bg {
+      position: absolute; inset: 0; z-index: 0;
+      /* Restored original Unsplash Background */
+      background-image: url('https://images.unsplash.com/photo-1606326608606-aa0b62935f2b?w=1400&q=80');
+      background-size: cover; background-position: center;
+    }
+    .auth-ov {
+      position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(135deg, rgba(5,10,22,.94), rgba(8,16,40,.88) 55%, rgba(4,8,18,.96));
+    }
+    .ptcls { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+    .pt { position: absolute; border-radius: 50%; background: rgba(45,91,227,.3); animation: drift linear infinite; }
+    @keyframes drift {
+      0%   { transform: translateY(110vh) scale(0); opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: .5; }
+      100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+    }
+
+    /* CARD */
+    .auth-box { position: relative; z-index: 3; width: 100%; max-width: 460px; padding: 22px; }
+    .gc {
+      background: rgba(6,13,32,.85); backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px);
+      border: 1px solid rgba(255,255,255,.1); border-radius: 18px; padding: 38px 40px;
+      animation: slideUp .5s ease;
+    }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+    .gc-logo { display: flex; justify-content: center; margin-bottom: 18px; }
+    .gc-logo img { height: 64px; width: auto; object-fit: contain; }
+    .gc-title { font-size: 22px; font-weight: 700; color: var(--white); text-align: center; margin-bottom: 5px; }
+    .gc-sub   { font-size: 13px; color: var(--muted); text-align: center; margin-bottom: 22px; }
+
+    /* FIELDS */
+    .fg { margin-bottom: 14px; }
+    .fl { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+    .fi-w { position: relative; }
+    .fi-ic { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); opacity: .5; line-height: 0; }
+    .fi {
+      width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+      padding: 12px 13px 12px 40px; color: var(--text); font-family: 'Poppins', sans-serif; font-size: 14px;
+      outline: none; transition: border-color .2s, background .2s, box-shadow .2s;
+    }
+    .fi:focus { border-color: var(--blue); background: rgba(45,91,227,.07); box-shadow: 0 0 0 3px rgba(45,91,227,.12); }
+    .fi::placeholder { color: rgba(255,255,255,.22); }
+    .eye { position: absolute; right: 13px; top: 50%; transform: translateY(-50%); cursor: pointer; opacity: .45; line-height: 0; }
+    .eye:hover { opacity: .9; }
+    .extras-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .chk { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); cursor: pointer; }
+    .chk input { accent-color: var(--blue); }
+    .fgt { font-size: 12px; color: var(--muted); text-decoration: none; }
+    .fgt:hover { color: var(--blue); }
+    .fb-nx {
+      width: 100%; padding: 13px; background: var(--blue); border: none; color: white;
+      border-radius: 10px; cursor: pointer; font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 600;
+      transition: background .2s, transform .1s;
+    }
+    .fb-nx:hover { background: var(--blue2); }
+    .fb-nx:active { transform: scale(.98); }
+    .flink { text-align: center; margin-top: 18px; font-size: 13px; color: var(--muted); }
+    .flink a { color: var(--blue); font-weight: 600; text-decoration: none; }
+    .flink a:hover { text-decoration: underline; }
+
+    /* FLASH */
+    .flash { border-radius: 10px; padding: 10px 14px; font-size: 13px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .flash svg { flex-shrink: 0; }
+    .flash-danger  { background: rgba(231,76,60,.15);  border: 1px solid rgba(231,76,60,.4);  color: #ff8a80; }
+    .flash-success { background: rgba(39,174,96,.15);  border: 1px solid rgba(39,174,96,.4);  color: #6dffaa; }
+    .flash-info    { background: rgba(45,91,227,.15);  border: 1px solid rgba(45,91,227,.4);  color: #7aaeff; }
+
+    /* LIGHT THEME */
+    [data-theme="light"] { --card: rgba(45,91,227,.06); --border: rgba(45,91,227,.2); --text: #1a2340; --muted: #6b7a9e; --white: #1a2340; }
+    [data-theme="light"] body { background: #eef1f9; }
+    [data-theme="light"] #nav { background: rgba(255,255,255,.9); border-bottom-color: rgba(45,91,227,.12); }
+    [data-theme="light"] .nl a { color: var(--muted); }
+    [data-theme="light"] #themeToggle { background: rgba(45,91,227,.06); border-color: rgba(45,91,227,.15); color: var(--muted); }
+    [data-theme="light"] .gc { background: rgba(255,255,255,.92); border-color: rgba(45,91,227,.15); box-shadow: 0 8px 40px rgba(45,91,227,.12); }
+    [data-theme="light"] .fi { color: var(--text); }
+    [data-theme="light"] .fi::placeholder { color: rgba(26,35,64,.3); }
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <a class="lgo" href="{{ url_for('index') }}">
+    <img src="{{ url_for('static', filename='assets/logo.png') }}" height="36" alt="FairEx" onerror="this.style.display='none'">
+    <div><span class="lgo-nm">FairEx</span><span class="lgo-sub">Education</span></div>
+  </a>
+  <ul class="nl">
+    <li><a href="{{ url_for('index') }}">Home</a></li>
+    <li><a href="#">About Us</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <div class="na">
+    <button id="themeToggle" onclick="toggleTheme()">
+      <span id="themeIcon">☀️</span><span id="themeLabel">Light</span>
+    </button>
+    <button class="nb-signup" onclick="window.location='{{ url_for('signUp') }}'">Sign Up</button>
+  </div>
+</nav>
+
+<div class="auth-wrap">
+  <div class="auth-bg"></div>
+  <div class="auth-ov"></div>
+  <div class="ptcls" id="ptcls"></div>
+
+  <div class="auth-box">
+    <div class="gc">
+
+      <div class="gc-logo">
+        <img src="{{ url_for('static', filename='assets/logo.png') }}" alt="FairEx" onerror="this.style.display='none'">
+      </div>
+      <div class="gc-title">Welcome Back</div>
+      <div class="gc-sub">Sign in to continue your journey.</div>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+          <div class="flash flash-{{ category }}">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            {{ message }}
+          </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <form action="{{ url_for('login') }}" method="POST">
+
+        <div class="fg">
+          <div class="fl">Username</div>
+          <div class="fi-w">
+            <span class="fi-ic">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </span>
+            <input class="fi" type="text" name="username" placeholder="Enter your username" required>
+          </div>
+        </div>
+
+        <div class="fg">
+          <div class="fl">Password</div>
+          <div class="fi-w">
+            <span class="fi-ic">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+            </span>
+            <input class="fi" type="password" name="password" id="pw" placeholder="Enter your password" style="padding-right:42px" required>
+            <span class="eye" onclick="togglePw()">
+              <svg id="eye-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+
+        <div class="fg" style="margin-top:14px; margin-bottom: 20px;">
+          <div class="fl">Login as</div>
+          <div style="display:flex;gap:0;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:4px">
+            <button type="button" onclick="document.getElementById('signin-role').value='student';this.style.background='#2d5be3';this.style.color='white';this.nextElementSibling.style.background='transparent';this.nextElementSibling.style.color='var(--muted)'" style="flex:1;padding:8px;border-radius:7px;border:none;font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;cursor:pointer;background:#2d5be3;color:white;transition:all .2s">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block;vertical-align:middle;margin-right:5px"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Student</button>
+            <button type="button" onclick="document.getElementById('signin-role').value='doctor';this.style.background='#e74c3c';this.style.color='white';this.previousElementSibling.style.background='transparent';this.previousElementSibling.style.color='var(--muted)'" style="flex:1;padding:8px;border-radius:7px;border:none;font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;cursor:pointer;background:transparent;color:var(--muted);transition:all .2s">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block;vertical-align:middle;margin-right:5px"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Doctor</button>
+          </div>
+          <input type="hidden" name="role" id="signin-role" value="student">
+        </div>
+
+        <div class="extras-row">
+          <label class="chk"><input type="checkbox" name="remember"> Remember me</label>
+          <a class="fgt" href="#">Forgot Password?</a>
+        </div>
+
+        <button type="submit" class="fb-nx">Login</button>
+      </form>
+
+      <div class="flink">
+        Don't have an account? <a href="{{ url_for('signUp') }}">Sign Up</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  function toggleTheme() {
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    document.documentElement.setAttribute('data-theme', isLight ? 'dark' : 'light');
+    document.getElementById('themeIcon').textContent  = isLight ? '☀️' : '🌙';
+    document.getElementById('themeLabel').textContent = isLight ? 'Light' : 'Dark';
+  }
+
+  function togglePw() {
+    const pw   = document.getElementById('pw');
+    const icon = document.getElementById('eye-icon');
+    const open   = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
+    const closed = `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>`;
+    if (pw.type === 'password') { pw.type = 'text';     icon.innerHTML = closed; }
+    else                        { pw.type = 'password'; icon.innerHTML = open;   }
+  }
+
+  (function() {
+    const wrap = document.getElementById('ptcls');
+    for (let i = 0; i < 18; i++) {
+      const p = document.createElement('div');
+      p.className = 'pt';
+      const size = Math.random() * 6 + 3;
+      p.style.cssText = [
+        `width:${size}px`, `height:${size}px`,
+        `left:${Math.random() * 100}%`,
+        `animation-duration:${Math.random() * 14 + 8}s`,
+        `animation-delay:-${Math.random() * 10}s`,
+        `opacity:${Math.random() * .4 + .1}`
+      ].join(';');
+      wrap.appendChild(p);
+    }
+  })();
+</script>
+</body>
+</html>

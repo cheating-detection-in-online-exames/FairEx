@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Login Form | By Code Info</title>
+    <link rel="stylesheet" href="../static/css/admin-page.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="login">
+        <div class="box">
+          <img src="../static/assets/products.jpeg" alt="" />
+          <a href="{{ url_for('product' ) }}">add a product</a>
+        </div>
+        <div class="box">
+          <img src="../static/assets/users.jpeg" alt="" />
+          <a href="{{ url_for('admin_list' ) }}">user list</a>
+        </div>
+        <form method="POST">
+          <input type="hidden" name="log-out-btn" value="log-out" />
+          <button type="submit">log out</button>
+        </form>
+      </div>
+      <div class="pic">
+        <img src="../static/assets/login_photo.jpeg" alt="Login Image" />
+      </div>
+    </div>
+  </body>
+</html>

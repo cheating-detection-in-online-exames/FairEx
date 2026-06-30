@@ -1,0 +1,113 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+:root {
+    --primary-color: #490606;
+    --secondary-color: #d2a7ae;
+    --font: #555555;
+    --btn: #D10024;
+}
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* min-height: 100vh; */
+    background:var(--primary-color);
+}
+.container{
+    width: 100%;
+    display: flex;
+    max-width: 1000px;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 30px 50px rgba(0, 0, 0, 0.1);
+}
+.login{
+    width: 400px;
+    background-color:  #f8f8f8;
+}
+form{
+    align-items: center;
+    width: 250px;
+    margin: 10px auto;
+}
+
+#photo-form{
+    margin-bottom: 0;
+}
+h1{
+    color: var(--font);
+    margin: 20px;
+    text-align: center;
+    font-weight: bolder;
+    text-transform: uppercase;  
+}
+
+p{
+    text-align: center;
+    margin: 10px;
+}
+hr{
+    border-top: 2px solid var(--secondary-color);
+    width: 252px;
+}
+.pic{
+    margin: 140px 40px 0px 0px;
+    text-align: center;
+    width: 600px;
+    align-items: center;
+}
+.pic img{
+    width: 250px;
+    height:  250px;
+    border-radius: 20%;
+}
+
+form label{
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 5px;
+    color: var(--font);
+
+}
+input{
+    width: 100%;
+    margin: 2px;
+    border: none;
+    outline: none;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid gray;
+}
+button{
+    margin: 0 auto;
+    border: none;
+    outline: none;
+    padding: 8px;
+    width: 252px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 15px 0px 20px 0px;
+    border-radius: 5px;
+    background: var(--primary-color);
+}
+
+button:hover{
+    background:var(--btn);
+}
+
+
+.light-text {
+    font-weight: 300; /* Adjust to a lower value for lighter weight (100 to 300 is typically light) */
+    opacity: 0.7; /* Makes the text slightly lighter by reducing its opacity */
+    font-family: Arial, sans-serif; /* Optional: Ensure you use your desired font */
+    font-size: 14px; /* Adjust the font size as needed */
+    color: #333; /* Adjust the color as needed */
+}
+
+</span>

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | FairEx</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #2d5be3; --blue2: #1e46c9;
+      --card: rgba(255,255,255,.06); --border: rgba(255,255,255,.12);
+      --text: #e8eaf0; --muted: rgba(200,210,235,.55); --white: #ffffff;
+      --ok: #27ae60; --warn: #e67e22; --danger: #e74c3c;
+    }
+    body { font-family: 'Poppins', sans-serif; background: #050a16; color: var(--text); min-height: 100vh; }
+
+    /* ── NAV ── */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 64px; display: flex; align-items: center; justify-content: space-between; padding: 0 28px;
+      background: rgba(5,10,22,.82); backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .lgo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .lgo img { height: 36px; filter: brightness(0) invert(1); }
+    .lgo-nm  { display: block; font-size: 16px; font-weight: 700; color: var(--white); line-height: 1.1; }
+    .lgo-sub { display: block; font-size: 10px; font-weight: 500; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; }
+    .nl { list-style: none; display: flex; gap: 4px; }
+    .nl a { color: var(--muted); text-decoration: none; font-size: 13px; font-weight: 500; padding: 6px 12px; border-radius: 8px; transition: color .2s, background .2s; }
+    .nl a:hover { color: var(--white); background: rgba(255,255,255,.07); }
+    .na { display: flex; align-items: center; gap: 10px; }
+    .nav-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), #7b5ea7);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700; color: white; cursor: pointer;
+    }
+    .nav-btn {
+      padding: 7px 16px; border-radius: 9px; font-family: 'Poppins', sans-serif;
+      font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: all .2s;
+    }
+    .nav-btn-ghost { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); color: var(--muted); }
+    .nav-btn-ghost:hover { background: rgba(255,255,255,.1); color: var(--white); }
+    .nav-btn-danger { background: rgba(231,76,60,.15); border: 1px solid rgba(231,76,60,.3); color: #ff8a80; }
+    .nav-btn-danger:hover { background: rgba(231,76,60,.25); }
+
+    /* ── PAGE ── */
+    .page { padding: 88px 28px 48px; max-width: 1280px; margin: 0 auto; }
+
+    /* ── HERO GREETING ── */
+    .hero {
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(6,13,32,.7); backdrop-filter: blur(18px);
+      border: 1px solid rgba(255,255,255,.1); border-radius: 18px;
+      padding: 32px 36px; margin-bottom: 32px;
+      background-image: radial-gradient(ellipse at 80% 50%, rgba(45,91,227,.12) 0%, transparent 70%);
+    }
+    .hero-left h1 { font-size: 26px; font-weight: 700; color: var(--white); margin-bottom: 6px; }
+    .hero-left p  { font-size: 14px; color: var(--muted); }
+    .hero-badges  { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;
+    }
+    .badge-blue   { background: rgba(45,91,227,.15);  border: 1px solid rgba(45,91,227,.3);  color: #7aaeff; }
+    .badge-green  { background: rgba(39,174,96,.15);  border: 1px solid rgba(39,174,96,.3);  color: #6dffaa; }
+    .badge-purple { background: rgba(123,94,167,.15); border: 1px solid rgba(123,94,167,.3); color: #c4a0ff; }
+    .hero-right { text-align: right; }
+    .hero-time { font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+    .hero-date { font-size: 22px; font-weight: 700; color: var(--white); }
+
+    /* ── STATS ROW ── */
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
+    .stat-card {
+      background: rgba(6,13,32,.7); backdrop-filter: blur(18px);
+      border: 1px solid rgba(255,255,255,.1); border-radius: 14px;
+      padding: 22px 24px; display: flex; align-items: center; gap: 16px;
+    }
+    .stat-icon {
+      width: 44px; height: 44px; border-radius: 11px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .stat-icon-blue   { background: rgba(45,91,227,.18); }
+    .stat-icon-green  { background: rgba(39,174,96,.18); }
+    .stat-icon-purple { background: rgba(123,94,167,.18); }
+    .stat-val  { font-size: 24px; font-weight: 700; color: var(--white); line-height: 1; }
+    .stat-lbl  { font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+    /* ── SECTION TITLE ── */
+    .sec-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .sec-title { font-size: 16px; font-weight: 700; color: var(--white); display: flex; align-items: center; gap: 8px; }
+    .sec-title::before { content: ''; width: 3px; height: 16px; background: var(--blue); border-radius: 2px; display: inline-block; }
+    .sec-link { font-size: 12px; color: var(--blue); text-decoration: none; font-weight: 500; }
+    .sec-link:hover { text-decoration: underline; }
+
+    /* ── MAIN GRID ── */
+    .main-grid { display: grid; grid-template-columns: 1fr 340px; gap: 24px; }
+
+    /* ── EXAM CARDS ── */
+    .exam-list { display: flex; flex-direction: column; gap: 14px; }
+    .exam-card {
+      background: rgba(6,13,32,.7); backdrop-filter: blur(18px);
+      border: 1px solid rgba(255,255,255,.1); border-radius: 14px;
+      padding: 22px 24px; display: flex; align-items: center; gap: 20px;
+      transition: border-color .2s, transform .2s;
+    }
+    .exam-card:hover { border-color: rgba(45,91,227,.4); transform: translateY(-2px); }
+    .exam-icon {
+      width: 48px; height: 48px; border-radius: 12px; flex-shrink: 0;
+      background: linear-gradient(135deg, rgba(45,91,227,.3), rgba(123,94,167,.2));
+      border: 1px solid rgba(45,91,227,.3);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .exam-body { flex: 1; min-width: 0; }
+    .exam-name { font-size: 15px; font-weight: 600; color: var(--white); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .exam-meta { display: flex; gap: 16px; flex-wrap: wrap; }
+    .exam-meta span { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 4px; }
+    .exam-action { flex-shrink: 0; }
+    .btn-start {
+      padding: 9px 20px; border-radius: 9px; border: none;
+      background: var(--blue); color: white;
+      font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 600;
+      cursor: pointer; text-decoration: none; display: inline-block;
+      transition: background .2s, transform .1s;
+    }
+    .btn-start:hover { background: var(--blue2); transform: scale(1.03); }
+    .empty-state {
+      background: rgba(6,13,32,.5); border: 1px dashed rgba(255,255,255,.1);
+      border-radius: 14px; padding: 48px 24px; text-align: center;
+    }
+    .empty-state p { color: var(--muted); font-size: 14px; margin-top: 12px; }
+
+    /* ── SIDEBAR ── */
+    .sidebar { display: flex; flex-direction: column; gap: 20px; }
+    .side-card {
+      background: rgba(6,13,32,.7); backdrop-filter: blur(18px);
+      border: 1px solid rgba(255,255,255,.1); border-radius: 14px; padding: 22px;
+    }
+    .side-card-title { font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 16px; display: flex; align-items: center; gap: 7px; }
+
+    /* ── ANNOUNCEMENTS ── */
+    .ann-item { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,.05); }
+    .ann-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .ann-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); flex-shrink: 0; margin-top: 5px; }
+    .ann-date { font-size: 10px; color: var(--muted); margin-bottom: 2px; }
+    .ann-msg  { font-size: 13px; color: var(--text); line-height: 1.4; }
+
+    /* ── PROFILE CARD ── */
+    .profile-avatar {
+      width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 14px;
+      background: linear-gradient(135deg, var(--blue), #7b5ea7);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 700; color: white;
+    }
+    .profile-name { text-align: center; font-size: 15px; font-weight: 700; color: var(--white); margin-bottom: 3px; }
+    .profile-sub  { text-align: center; font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+    .profile-rows { display: flex; flex-direction: column; gap: 8px; }
+    .profile-row  { display: flex; justify-content: space-between; font-size: 12px; }
+    .profile-row span:first-child { color: var(--muted); }
+    .profile-row span:last-child  { color: var(--text); font-weight: 500; }
+
+    /* ── FLASH ── */
+    .flash { border-radius: 10px; padding: 10px 14px; font-size: 13px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .flash-danger  { background: rgba(231,76,60,.15);  border: 1px solid rgba(231,76,60,.4);  color: #ff8a80; }
+    .flash-success { background: rgba(39,174,96,.15);  border: 1px solid rgba(39,174,96,.4);  color: #6dffaa; }
+    .flash-info    { background: rgba(45,91,227,.15);  border: 1px solid rgba(45,91,227,.4);  color: #7aaeff; }
+
+    /* ── LIGHT THEME ── */
+    [data-theme="light"] { --card: rgba(45,91,227,.06); --border: rgba(45,91,227,.2); --text: #1a2340; --muted: #6b7a9e; --white: #1a2340; }
+    [data-theme="light"] body { background: #eef1f9; }
+    [data-theme="light"] #nav { background: rgba(255,255,255,.9); border-bottom-color: rgba(45,91,227,.12); }
+    [data-theme="light"] .lgo img { filter: none; }
+    [data-theme="light"] .hero, [data-theme="light"] .stat-card,
+    [data-theme="light"] .exam-card, [data-theme="light"] .side-card {
+      background: rgba(255,255,255,.9); border-color: rgba(45,91,227,.15);
+      box-shadow: 0 4px 24px rgba(45,91,227,.07);
+    }
+    [data-theme="light"] .empty-state { background: rgba(255,255,255,.6); }
+
+    @media (max-width: 900px) {
+      .main-grid { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: 1fr 1fr; }
+      .hero { flex-direction: column; gap: 16px; }
+      .hero-right { text-align: left; }
+    }
+    @media (max-width: 560px) {
+      .stats { grid-template-columns: 1fr; }
+      .nl { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav id="nav">
+  <a class="lgo" href="{{ url_for('index') }}">
+    <img src="{{ url_for('static', filename='assets/logo.png') }}" alt="FairEx" onerror="this.style.display='none'">
+    <div><span class="lgo-nm">FairEx</span><span class="lgo-sub">Education</span></div>
+  </a>
+  <ul class="nl">
+    <li><a href="{{ url_for('index') }}">Dashboard</a></li>
+    <li><a href="#">My Exams</a></li>
+    <li><a href="#">Results</a></li>
+  </ul>
+  <div class="na">
+    <button class="nav-btn nav-btn-ghost" onclick="toggleTheme()">
+      <span id="themeIcon">☀️</span> <span id="themeLabel">Light</span>
+    </button>
+    <div class="nav-avatar" title="{{ student_name }}">
+      {{ (student_name or 'S')[0].upper() }}
+    </div>
+    <a href="{{ url_for('logout') }}" style="text-decoration:none">
+      <button class="nav-btn nav-btn-danger">Logout</button>
+    </a>
+  </div>
+</nav>
+
+<div class="page">
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+      <div class="flash flash-{{ category }}">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        {{ message }}
+      </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <!-- ── HERO ── -->
+  <div class="hero">
+    <div class="hero-left">
+      <h1>Welcome back, {{ student_name or 'Student' }} 👋</h1>
+      <p>Here's what's coming up for you today.</p>
+      <div class="hero-badges">
+        <span class="badge badge-blue">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Level {{ student_level or '1' }}
+        </span>
+        <span class="badge badge-purple">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          {{ student_department or 'General' }}
+        </span>
+        <span class="badge badge-green">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Active Student
+        </span>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-time" id="hero-time">--:-- --</div>
+      <div class="hero-date" id="hero-date">Loading...</div>
+    </div>
+  </div>
+
+  <!-- ── STATS ── -->
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-icon stat-icon-blue">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7aaeff" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
+      <div>
+        <div class="stat-val">{{ upcoming_exams|length }}</div>
+        <div class="stat-lbl">Upcoming Exams</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon stat-icon-green">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6dffaa" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div>
+        <div class="stat-val">{{ courses|length }}</div>
+        <div class="stat-lbl">Enrolled Courses</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon stat-icon-purple">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c4a0ff" stroke-width="2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+      </div>
+      <div>
+        <div class="stat-val">{{ announcements|length }}</div>
+        <div class="stat-lbl">Announcements</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MAIN GRID ── -->
+  <div class="main-grid">
+
+    <!-- LEFT: Exams -->
+    <div>
+      <div class="sec-hdr">
+        <div class="sec-title">Upcoming Exams</div>
+        <a href="#" class="sec-link">View all →</a>
+      </div>
+
+      <div class="exam-list">
+        {% for exam in upcoming_exams or [] %}
+        <div class="exam-card">
+          <div class="exam-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7aaeff" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          </div>
+          <div class="exam-body">
+            <div class="exam-name">{{ exam.course_name }}</div>
+            <div class="exam-meta">
+              <span>
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                {{ exam.date }}
+              </span>
+              <span>
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                {{ exam.time }}
+              </span>
+              <span>
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>
+                {{ exam.duration or 60 }} mins
+              </span>
+            </div>
+          </div>
+          <div class="exam-action">
+            <a href="{{ url_for('start_exam_flow', exam_id=exam.id) }}" class="btn-start">Start →</a>
+          </div>
+        </div>
+        {% endfor %}
+
+        {% if not upcoming_exams %}
+        <div class="empty-state">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(200,210,235,.25)" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <p>No exams scheduled right now. Check back later!</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- RIGHT: Sidebar -->
+    <div class="sidebar">
+
+      <!-- Profile Card -->
+      <div class="side-card">
+        <div class="profile-avatar">{{ (student_name or 'S')[0].upper() }}</div>
+        <div class="profile-name">{{ student_name or 'Student' }}</div>
+        <div class="profile-sub">Student Account</div>
+        <div class="profile-rows">
+          <div class="profile-row">
+            <span>Level</span>
+            <span>{{ student_level or '—' }}</span>
+          </div>
+          <div class="profile-row">
+            <span>Department</span>
+            <span>{{ student_department or '—' }}</span>
+          </div>
+          <div class="profile-row">
+            <span>Status</span>
+            <span style="color:#6dffaa">● Active</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Announcements -->
+      <div class="side-card">
+        <div class="side-card-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7aaeff" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          Announcements
+        </div>
+        {% for note in announcements or [] %}
+        <div class="ann-item">
+          <div class="ann-dot"></div>
+          <div>
+            <div class="ann-date">{{ note.date }}</div>
+            <div class="ann-msg">{{ note.message }}</div>
+          </div>
+        </div>
+        {% endfor %}
+        {% if not announcements %}
+        <p style="font-size:13px;color:var(--muted);text-align:center;padding:12px 0">No announcements yet.</p>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  function toggleTheme() {
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    document.documentElement.setAttribute('data-theme', isLight ? 'dark' : 'light');
+    document.getElementById('themeIcon').textContent  = isLight ? '☀️' : '🌙';
+    document.getElementById('themeLabel').textContent = isLight ? 'Light' : 'Dark';
+  }
+
+  function updateClock() {
+    const now = new Date();
+    document.getElementById('hero-time').textContent = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    document.getElementById('hero-date').textContent = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+</script>
+</body>
+</html>

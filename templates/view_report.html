@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FairEx — Student Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#07101f;--bg2:#0d1b3e;
+  --card:rgba(255,255,255,.05);--card2:rgba(255,255,255,.08);
+  --border:rgba(255,255,255,.09);--border2:rgba(255,255,255,.14);
+  --blue:#2d5be3;--blue2:#1e4acb;
+  --text:#dde4f0;--muted:#7a8fad;--white:#fff;
+  --ok:#27ae60;--warn:#e67e22;--danger:#e74c3c;
+  --purple:#9b59b6;
+}
+body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+@keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes barFill{from{width:0}to{width:var(--w)}}
+
+/* NAV */
+nav{position:fixed;top:0;width:100%;z-index:999;height:64px;padding:0 32px;display:flex;align-items:center;justify-content:space-between;background:rgba(5,10,22,.99);border-bottom:1px solid rgba(255,255,255,.08)}
+.lgo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.lgo-nm{font-size:17px;font-weight:700;color:var(--white);display:block;line-height:1.1}
+.lgo-sub{font-size:9px;color:var(--muted);letter-spacing:2.5px;text-transform:uppercase;display:block}
+
+/* LAYOUT */
+.page{padding-top:80px;max-width:1100px;margin:0 auto;padding-left:24px;padding-right:24px;padding-bottom:60px}
+.back-btn{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:13px;text-decoration:none;margin-bottom:28px;padding:8px 16px;border:1px solid var(--border);border-radius:8px;transition:all .2s}
+.back-btn:hover{color:var(--white);border-color:var(--border2);background:var(--card)}
+
+/* HEADER */
+.rpt-header{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px 32px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;animation:up .4s ease;gap:20px;flex-wrap:wrap}
+.rpt-header-left{display:flex;align-items:center;gap:18px}
+.rpt-avatar{width:52px;height:52px;border-radius:12px;background:rgba(45,91,227,.15);border:1px solid rgba(45,91,227,.3);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:var(--blue);flex-shrink:0}
+.rpt-title{font-size:18px;font-weight:700;color:var(--white)}
+.rpt-sub{font-size:12px;color:var(--muted);margin-top:3px}
+.risk-big{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.risk-pct-big{font-size:32px;font-weight:700;color:var(--white);line-height:1}
+.risk-badge{padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;letter-spacing:.5px}
+.risk-LOW{background:rgba(39,174,96,.12);color:#5dde8a;border:1px solid rgba(39,174,96,.2)}
+.risk-MODERATE{background:rgba(241,196,15,.1);color:#f1c40f;border:1px solid rgba(241,196,15,.2)}
+.risk-MEDIUM-HIGH{background:rgba(230,126,34,.1);color:#e67e22;border:1px solid rgba(230,126,34,.2)}
+.risk-HIGH{background:rgba(231,76,60,.1);color:#e74c3c;border:1px solid rgba(231,76,60,.2)}
+.risk-CRITICAL{background:rgba(255,71,87,.12);color:#ff4757;border:1px solid rgba(255,71,87,.25)}
+
+/* RISK CARDS */
+.risk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
+.risk-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;animation:up .4s ease;transition:border-color .2s}
+.risk-card:hover{border-color:var(--border2)}
+.risk-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.risk-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center}
+.risk-val{font-size:24px;font-weight:700;color:var(--white)}
+.risk-lbl{font-size:12px;color:var(--muted);margin-bottom:10px;font-weight:500}
+.bar-bg{height:5px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden}
+.bar-fill{height:100%;border-radius:99px;--w:0%;animation:barFill 1.2s cubic-bezier(.4,0,.2,1) .3s both}
+
+/* SECTION TITLE */
+.sec-title{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.sec-title::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* TABLES */
+.tbl-wrap{background:var(--card);border:1px solid var(--border);border-radius:13px;overflow:hidden;margin-bottom:24px;animation:up .5s ease}
+table{width:100%;border-collapse:collapse}
+thead tr{background:rgba(255,255,255,.03);border-bottom:1px solid var(--border)}
+th{padding:12px 16px;text-align:left;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.8px}
+td{padding:12px 16px;font-size:12px;border-bottom:1px solid rgba(255,255,255,.04)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,.02)}
+
+/* SYSTEM EVENT BADGES */
+.event-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.ev-DIFFERENT_SPEAKER{background:rgba(231,76,60,.1);color:#ff7675}
+.ev-OVERLAP{background:rgba(155,89,182,.1);color:#c39bd3}
+.ev-SAME_PERSON_TOO_MUCH{background:rgba(230,126,34,.1);color:#e67e22}
+
+.ev-Tab-Switched{background:rgba(231,76,60,.1);color:#ff7675}
+.ev-Window-Lost-Focus{background:rgba(230,126,34,.1);color:#e67e22}
+.ev-Shortcut-Attempt-copy-and-paste{background:rgba(241,196,15,.1);color:#f1c40f}
+
+/* IMAGES GRID */
+.img-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-bottom:24px}
+.img-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;animation:up .5s ease;transition:border-color .2s,transform .2s;cursor:pointer}
+.img-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.img-card img{width:100%;height:130px;object-fit:cover;display:block}
+.img-card-lbl{padding:8px 12px;font-size:11px;color:var(--muted);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.img-card-lbl span{display:block;font-size:10px;color:rgba(122,143,173,.6);margin-top:2px}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:36px;color:var(--muted);font-size:13px}
+.empty-state svg{display:block;margin:0 auto 10px;opacity:.4}
+
+/* LIGHTBOX */
+#lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
+#lightbox.open{display:flex}
+#lightbox img{max-width:90vw;max-height:85vh;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+#lightbox-close{position:fixed;top:20px;right:28px;color:white;font-size:28px;cursor:pointer;opacity:.7;transition:opacity .2s}
+#lightbox-close:hover{opacity:1}
+
+/* TABS */
+.tabs{display:flex;gap:6px;margin-bottom:16px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:5px}
+.tab{flex:1;padding:8px;border-radius:7px;text-align:center;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s}
+.tab.active{background:var(--blue);color:white}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+@media(max-width:650px){
+  .risk-grid{grid-template-columns:1fr}
+  .rpt-header{flex-direction:column;align-items:flex-start}
+  .risk-big{align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="lgo" href="{{ url_for('admin_dashboard') }}">
+    <div><span class="lgo-nm">FairEx</span><span class="lgo-sub">Education</span></div>
+  </a>
+  <div style="font-size:13px;color:var(--muted)">Proctoring Report</div>
+  <div></div>
+</nav>
+
+<div class="page">
+
+  <a href="{{ url_for('exam_students', exam_id=exam_id) }}" class="back-btn">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Students
+  </a>
+
+  <div class="rpt-header">
+    <div class="rpt-header-left">
+      <div class="rpt-avatar">{{ student_id | string | first }}</div>
+      <div>
+        <div class="rpt-title">Student ID: {{ student_id }}</div>
+        <div class="rpt-sub">Exam ID: {{ exam_id }} &nbsp;·&nbsp; Full Proctoring Report</div>
+      </div>
+    </div>
+    {% if risk_summary %}
+    <div class="risk-big">
+      <div class="risk-pct-big">{{ risk_summary.get('combined_percentage', '0') }}%</div>
+      <span class="risk-badge risk-{{ risk_summary.get('risk_level', 'LOW') }}">
+        {{ risk_summary.get('risk_level', 'N/A') }}
+      </span>
+    </div>
+    {% endif %}
+  </div>
+
+  {% if risk_summary %}
+  <div class="risk-grid">
+    <div class="risk-card">
+      <div class="risk-card-top">
+        <div class="risk-icon" style="background:rgba(45,91,227,.12)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2d5be3" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+        </div>
+        <span class="risk-val">{{ risk_summary.get('audio_percentage', '0') }}%</span>
+      </div>
+      <div class="risk-lbl">Audio Risk</div>
+      <div class="bar-bg"><div class="bar-fill" style="--w:{{ risk_summary.get('audio_percentage','0') }}%;background:{% if risk_summary.get('audio_percentage','0')|float > 60 %}#e74c3c{% elif risk_summary.get('audio_percentage','0')|float > 30 %}#e67e22{% else %}#27ae60{% endif %}"></div></div>
+    </div>
+
+    <div class="risk-card">
+      <div class="risk-card-top">
+        <div class="risk-icon" style="background:rgba(155,89,182,.12)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9b59b6" stroke-width="2"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+        </div>
+        <span class="risk-val">{{ risk_summary.get('webcam_percentage', '0') }}%</span>
+      </div>
+      <div class="risk-lbl">Webcam Risk</div>
+      <div class="bar-bg"><div class="bar-fill" style="--w:{{ risk_summary.get('webcam_percentage','0') }}%;background:{% if risk_summary.get('webcam_percentage','0')|float > 60 %}#e74c3c{% elif risk_summary.get('webcam_percentage','0')|float > 30 %}#e67e22{% else %}#27ae60{% endif %}"></div></div>
+    </div>
+
+    <div class="risk-card">
+      <div class="risk-card-top">
+        <div class="risk-icon" style="background:rgba(230,126,34,.12)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e67e22" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <span class="risk-val">{{ risk_summary.get('system_percentage', '0') }}%</span>
+      </div>
+      <div class="risk-lbl">System Risk</div>
+      <div class="bar-bg"><div class="bar-fill" style="--w:{{ risk_summary.get('system_percentage','0') }}%;background:{% if risk_summary.get('system_percentage','0')|float > 60 %}#e74c3c{% elif risk_summary.get('system_percentage','0')|float > 30 %}#e67e22{% else %}#27ae60{% endif %}"></div></div>
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('audio')">🎙 Audio Events ({{ audio_events|length }})</div>
+    <div class="tab" onclick="switchTab('system')">🖥 System Events ({{ system_events|length }})</div>
+    <div class="tab" onclick="switchTab('objects')">📷 Object Violations ({{ obj_images|length }})</div>
+  </div>
+
+  <div class="tab-content active" id="tab-audio">
+    <div class="sec-title">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/></svg>
+      Audio Suspicious Events
+    </div>
+    {% if audio_events %}
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Timestamp</th><th>Event</th><th>Duration (sec)</th></tr></thead>
+        <tbody>
+        {% for e in audio_events %}
+        <tr>
+          <td style="color:var(--muted)">{{ loop.index }}</td>
+          <td style="color:var(--muted);font-size:11px">{{ e.timestamp }}</td>
+          <td><span class="event-badge ev-{{ e.event_label }}">{{ e.event_label }}</span></td>
+          <td style="color:var(--white);font-weight:600">{{ e.duration_sec }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="tbl-wrap"><div class="empty-state">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/></svg>
+      No audio events recorded.
+    </div></div>
+    {% endif %}
+  </div>
+
+  <div class="tab-content" id="tab-system">
+    <div class="sec-title">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/></svg>
+      System / Browser Events
+    </div>
+    {% if system_events %}
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Timestamp</th><th>Event</th></tr></thead>
+        <tbody>
+        {% for e in system_events %}
+        <tr>
+          <td style="color:var(--muted)">{{ loop.index }}</td>
+          <td style="color:var(--muted);font-size:11px">{{ e.Timestamp }}</td>
+          <td>
+            <span class="event-badge ev-{{ e.Class }}">
+              {{ e.Event }}
+            </span>
+          </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="tbl-wrap"><div class="empty-state">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/></svg>
+      No system events recorded.
+    </div></div>
+    {% endif %}
+  </div>
+
+  <div class="tab-content" id="tab-objects">
+    <div class="sec-title">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/></svg>
+      Forbidden Object Captures
+    </div>
+    {% if obj_images %}
+    <div class="img-grid">
+      {% for img in obj_images %}
+      <div class="img-card" onclick="openLightbox('/get-evidence/{{ evidence_folder }}/{{ img }}')">
+        <img src="/get-evidence/{{ evidence_folder }}/{{ img }}" alt="{{ img }}" loading="lazy">
+        <div class="img-card-lbl">
+          {% set parts = img.split('_') %}
+          {{ parts[0]|upper }} {% if parts|length > 1 %}- {{ parts[1]|upper }}{% endif %}
+          <span>{{ img }}</span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="tbl-wrap"><div class="empty-state">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="2"/></svg>
+      No evidence images found in {{ evidence_folder }}.
+    </div></div>
+    {% endif %}
+  </div>
+
+</div>
+
+<div id="lightbox" onclick="closeLightbox()">
+  <span id="lightbox-close">✕</span>
+  <img id="lightbox-img" src="" alt="Evidence">
+</div>
+
+<script>
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach((t) => {
+    t.classList.remove('active');
+    if(t.innerText.toLowerCase().includes(name)) t.classList.add('active');
+  });
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+}
+
+function openLightbox(src) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+}
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeLightbox(); });
+</script>
+</body>
+</html>

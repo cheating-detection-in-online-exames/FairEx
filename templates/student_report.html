@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FairEx — Cheating Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/report.css') }}">
+</head>
+<body>
+<nav id="nav">
+  <a class="lgo" href="{{ url_for('admin_dashboard') }}">
+    <img id="nav-logo" alt="FairEx">
+    <div><span class="lgo-nm">FairEx</span><span class="lgo-sub">Education</span></div>
+  </a>
+  <ul class="nl"><li><a href="{{ url_for('admin_dashboard') }}">Home</a></li></ul>
+  <div class="na">
+    <button id="themeToggle" onclick="toggleTheme()"><span id="themeIcon">☀️</span><span id="themeLabel">Light</span></button>
+    <button class="nb nb-o" onclick="window.location='{{ url_for('logout') }}'">Logout</button>
+  </div>
+</nav>
+
+<div style="padding-top:64px;min-height:100vh">
+  <div class="dlayout">
+    <div class="dsb">
+      <div class="dsb-u"><img class="all-logo" alt="FairEx"><div class="dsb-av av-r">{{ teacher_name[0]|upper }}</div><div class="dsb-nm">{{ teacher_name }}</div><div class="dsb-rl">Professor · CS Dept.</div></div>
+      <div class="dsb-lbl">Management</div>
+      <div class="dsi" onclick="window.location='{{ url_for('admin_dashboard') }}'"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Dashboard</div>
+      <div class="dsi" onclick="window.location='{{ url_for('create_exam') }}'"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg> Create Exam</div>
+      <div class="dsi on"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Reports</div>
+      <div class="dsi" onclick="window.location='{{ url_for('logout') }}'"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg> Logout</div>
+    </div>
+
+    <div class="dmain">
+      <div class="dgreet">Exam Report · {{ exam.title }}</div>
+      <div class="dtitle">Cheating Analysis Report</div>
+
+      {% if not has_cv_data %}
+      <div style="background:rgba(230,126,34,.08);border:1px solid rgba(230,126,34,.25);border-radius:10px;padding:14px 18px;margin-bottom:20px;font-size:13px;color:#fdcb6e">
+        ⚠ No CV monitoring data found for this student. The exam may have been taken before monitoring was active.
+      </div>
+      {% endif %}
+
+      <div class="rgrid">
+        <div class="rcard" style="text-align:center">
+          <div class="rcard-t">Cheating Probability Score</div>
+          <div class="big-sc" style="color:{% if cheat_score >= 60 %}var(--danger){% elif cheat_score >= 30 %}#e67e22{% else %}var(--ok){% endif %}">{{ cheat_score }}%</div>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:16px">
+            {% if cheat_score >= 60 %}🚨 High Risk{% elif cheat_score >= 30 %}⚠ Medium Risk{% else %}✓ Low Risk{% endif %}
+          </div>
+          <div style="height:8px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden">
+            <div style="width:{{ cheat_score }}%;height:100%;background:linear-gradient(90deg,#27ae60,#e67e22,#e74c3c);border-radius:4px"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:5px"><span>0% Safe</span><span>100%</span></div>
+        </div>
+        <div class="rcard">
+          <div class="rcard-t">Student Information</div>
+          <div class="vrow"><span class="vname">Username</span><span style="color:var(--white);font-weight:600">{{ student_username }}</span></div>
+          <div class="vrow"><span class="vname">Exam</span><span>{{ exam.title }}</span></div>
+          <div class="vrow"><span class="vname">Course</span><span>{{ exam.course_code }}</span></div>
+          <div class="vrow"><span class="vname">Submitted</span><span>{{ se.submitted_at[:16] if se.submitted_at else '—' }}</span></div>
+          <div class="vrow"><span class="vname">Score</span><span style="color:{% if se.score and se.score >= exam.passing_score %}#5dde8a{% else %}#ff7675{% endif %};font-weight:700">{{ se.score or 0 }}%</span></div>
+          <div class="vrow"><span class="vname">Result</span><span>{% if se.passed %}<span style="color:#5dde8a;font-weight:700">✓ Passed</span>{% else %}<span style="color:#ff7675;font-weight:700">✗ Failed</span>{% endif %}</span></div>
+        </div>
+      </div>
+
+      <div class="rgrid">
+        <div class="rcard">
+          <div class="rcard-t">Violations Detected</div>
+          <div class="vrow"><span class="vname"><span style="color:var(--danger)">⬤</span> Forbidden Objects</span><div style="display:flex;gap:8px"><span class="vcnt">{{ phone_count }}x</span><span class="vpts">+{{ phone_count * 20 }} pts</span></div></div>
+          <div class="vrow"><span class="vname"><span style="color:var(--warn)">⬤</span> Suspicious Gaze</span><div style="display:flex;gap:8px"><span class="vcnt">{{ gaze_count }}x</span><span class="vpts">+{{ gaze_count * 5 }} pts</span></div></div>
+          <div class="vrow"><span class="vname"><span style="color:var(--danger)">⬤</span> Hand Signals</span><div style="display:flex;gap:8px"><span class="vcnt">{{ hand_count }}x</span><span class="vpts">+{{ hand_count * 15 }} pts</span></div></div>
+          <div class="vrow"><span class="vname"><span style="color:var(--danger)">⬤</span> Extra Person</span><div style="display:flex;gap:8px"><span class="vcnt">{{ extra_count }}x</span><span class="vpts">+{{ extra_count * 25 }} pts</span></div></div>
+          <div class="vrow"><span class="vname"><span style="color:var(--warn)">⬤</span> Suspicious Leaning</span><div style="display:flex;gap:8px"><span class="vcnt">{{ leaning_count }}x</span><span class="vpts">+{{ leaning_count * 5 }} pts</span></div></div>
+          <div style="border-top:1px solid var(--border);margin-top:10px;padding-top:10px;display:flex;justify-content:space-between">
+            <span style="font-weight:700;color:var(--white)">Total Score</span>
+            <span style="font-weight:700;color:var(--danger);font-size:16px">{{ cheat_score }} pts</span>
+          </div>
+        </div>
+        <div class="rcard">
+          <div class="rcard-t">Event Timeline</div>
+          {% if timeline %}
+            {% for t in timeline %}
+            <div class="tl-item">
+              <div class="tl-dot" style="background:{{ t.color }}"></div>
+              <span class="tl-t">{{ t.time }}</span>
+              <span class="tl-e">{{ t.event }}</span>
+            </div>
+            {% endfor %}
+          {% else %}
+          <div style="color:var(--muted);font-size:13px;padding:10px 0">No events recorded.</div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div style="display:flex;gap:11px">
+        <a href="{{ url_for('exam_students', exam_id=exam.id) }}" class="nb nb-o" style="text-decoration:none;padding:11px 24px;font-size:14px">← Back</a>
+        <form method="POST" action="{{ url_for('flag_student', exam_id=exam.id, student_username=student_username) }}" onsubmit="return confirm('Flag {{ student_username }} as cheating and set score to 0?')">
+          <button type="submit" style="padding:11px 24px;font-size:14px;border-radius:8px;border:1px solid rgba(231,76,60,.3);background:rgba(231,76,60,.07);color:#ff7675;cursor:pointer;font-family:Poppins,sans-serif;font-weight:600">🚫 Flag as Cheating</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="{{ url_for('static', filename='js/base.js') }}"></script>
+<script>document.addEventListener('DOMContentLoaded', function() { applyTheme(currentTheme); setLogos(); });</script>
+</body>
+</html>

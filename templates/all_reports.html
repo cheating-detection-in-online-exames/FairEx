@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FairEx — All Student Reports</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{
+            --bg:#07101f;--bg2:#0d1b3e;
+            --card:rgba(255,255,255,.05);--card2:rgba(255,255,255,.08);
+            --border:rgba(255,255,255,.09);--border2:rgba(255,255,255,.14);
+            --blue:#2d5be3;--blue2:#1e4acb;
+            --text:#dde4f0;--muted:#7a8fad;--white:#fff;
+            --ok:#27ae60;--warn:#e67e22;--danger:#e74c3c;
+        }
+        body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+        @keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+
+        nav{
+            position:fixed;top:0;width:100%;z-index:999;height:64px;
+            padding:0 32px;display:flex;align-items:center;justify-content:space-between;
+            background:rgba(5,10,22,.99);border-bottom:1px solid rgba(255,255,255,.08)
+        }
+        .lgo{display:flex;align-items:center;gap:10px;text-decoration:none}
+        .lgo-nm{font-size:17px;font-weight:700;color:var(--white);display:block;line-height:1.1}
+        .lgo-sub{font-size:9px;color:var(--muted);letter-spacing:2.5px;text-transform:uppercase;display:block}
+
+        .page{
+            padding-top:80px;max-width:1100px;margin:0 auto;
+            padding-left:24px;padding-right:24px;padding-bottom:60px
+        }
+
+        .page-header{margin-bottom:32px;animation:up .4s ease}
+        .page-title{font-size:24px;font-weight:700;color:var(--white)}
+        .page-sub{font-size:14px;color:var(--muted);margin-top:4px}
+
+        .tbl-wrap{
+            background:var(--card);border:1px solid var(--border);
+            border-radius:13px;overflow:hidden;animation:up .5s ease
+        }
+        table{width:100%;border-collapse:collapse}
+        thead tr{background:rgba(255,255,255,.03);border-bottom:1px solid var(--border)}
+        th{
+            padding:14px 20px;text-align:left;font-size:11px;
+            font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.8px
+        }
+        td{
+            padding:14px 20px;font-size:13px;
+            border-bottom:1px solid rgba(255,255,255,.04)
+        }
+        tr:last-child td{border-bottom:none}
+        tr:hover td{background:rgba(255,255,255,.02)}
+
+        .risk-badge{
+            padding:4px 12px;border-radius:20px;font-size:11px;
+            font-weight:600;display:inline-flex;align-items:center;gap:6px
+        }
+        .risk-HIGH{background:rgba(231,76,60,.1);color:#e74c3c;border:1px solid rgba(231,76,60,.2)}
+        .risk-MEDIUM{background:rgba(230,126,34,.1);color:#e67e22;border:1px solid rgba(230,126,34,.2)}
+        .risk-LOW, .risk-SAFE{background:rgba(39,174,96,.1);color:#27ae60;border:1px solid rgba(39,174,96,.2)}
+
+        .vbtn{
+            background:var(--blue);color:white;text-decoration:none;
+            padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600;
+            transition:all .2s;display:inline-block
+        }
+        .vbtn:hover{background:var(--blue2);transform:translateY(-1px)}
+
+        .back-btn{
+            display:inline-flex;align-items:center;gap:8px;color:var(--muted);
+            font-size:13px;text-decoration:none;margin-top:24px;padding:8px 16px;
+            border:1px solid var(--border);border-radius:8px;transition:all .2s
+        }
+        .back-btn:hover{color:var(--white);border-color:var(--border2);background:var(--card)}
+    </style>
+</head>
+<body>
+
+<nav>
+    <a class="lgo" href="{{ url_for('admin_dashboard') }}">
+        <div><span class="lgo-nm">FairEx</span><span class="lgo-sub">Education</span></div>
+    </a>
+    <div style="font-size:13px;color:var(--muted)">Global Risk Logs</div>
+    <div></div>
+</nav>
+
+<div class="page">
+    <header class="page-header">
+        <h1 class="page-title">All Student Risk Reports</h1>
+        <p class="page-sub">Scanning all generated AI proctoring data from the local storage.</p>
+    </header>
+
+    <div class="tbl-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Exam ID</th>
+                    <th>Risk Level</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in reports %}
+                <tr>
+                    <td><b style="color:var(--white)">#{{ r.student_id }}</b></td>
+                    <td style="color:var(--muted)">Exam {{ r.exam_id }}</td>
+                    <td>
+                        <span class="risk-badge risk-{{ r.risk_level|upper }}">
+                            ● {{ r.risk_level|upper }}
+                        </span>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('view_report', student_id=r.student_id, exam_id=r.exam_id) }}" class="vbtn">
+                            View Full Evidence
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+
+                {% if not reports %}
+                <tr>
+                    <td colspan="4" style="text-align:center; padding:40px; color:var(--muted)">
+                        No reports found in <code>static/reports/</code>
+                    </td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+    <a href="{{ url_for('admin_dashboard') }}" class="back-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"/>
+        </svg>
+        Back to Dashboard
+    </a>
+</div>
+
+</body>
+</html>

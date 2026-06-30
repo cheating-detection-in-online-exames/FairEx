@@ -1,0 +1,22 @@
+/* index.css — Home page */
+.hero{position:relative;min-height:calc(100vh - 64px);overflow:hidden;display:flex;flex-direction:column}
+.hero-bg{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?w=1600&q=80') center/cover}
+.hero-ov{position:absolute;inset:0;background:linear-gradient(135deg,rgba(5,10,22,.93),rgba(10,20,50,.84) 55%,rgba(4,8,18,.95))}
+.hero-in{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 20px;animation:up .8s ease}
+.hero-logo{height:150px;width:auto;margin:0 auto 26px;filter:brightness(0) invert(1);drop-shadow(0 0 28px rgba(45,91,227,.4));display:block}
+[data-theme="light"] .hero-logo{filter:none}
+.hero-title{font-size:46px;font-weight:700;color:var(--white);margin-bottom:14px;line-height:1.2}
+.hero-sub{font-size:16px;color:rgba(180,200,240,.8);max-width:520px;margin:0 auto 40px;line-height:1.9}
+.hero-btns{display:flex;gap:16px;justify-content:center}
+.hbtn{padding:14px 44px;border-radius:10px;font-family:'Poppins',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .25s}
+.hbtn-b{background:var(--blue);border:none;color:white}
+.hbtn-b:hover{background:var(--blue2);transform:translateY(-3px);box-shadow:0 12px 30px rgba(45,91,227,.5)}
+.hbtn-g{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:white}
+.hbtn-g:hover{background:rgba(255,255,255,.13);transform:translateY(-3px)}
+.hero-copy{position:relative;z-index:2;text-align:center;padding:14px;font-size:12px;color:rgba(100,120,160,.6)}
+.feats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--border)}
+.feat{padding:26px 22px;border-right:1px solid var(--border);display:flex;align-items:flex-start;gap:13px}
+.feat:last-child{border-right:none}
+.feat-ic{width:42px;height:42px;border-radius:10px;background:rgba(45,91,227,.12);border:1px solid rgba(45,91,227,.18);display:flex;align-items:center;justify-content:center;flex-shrink:0;line-height:0}
+.feat-title{font-size:13px;font-weight:600;color:var(--white);margin-bottom:4px}
+.feat-desc{font-size:12px;color:var(--muted);line-height:1.6}

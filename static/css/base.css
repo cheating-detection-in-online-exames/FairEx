@@ -1,0 +1,84 @@
+/* ═══════════════════════════════════════════════
+   FairEx — base.css  (shared across all pages)
+   ═══════════════════════════════════════════════ */
+*{margin:0;padding:0;box-sizing:border-box}
+:root,[data-theme="dark"]{
+  --bg:#07101f;--bg2:#0d1b3e;
+  --card:rgba(255,255,255,.05);--card2:rgba(255,255,255,.08);
+  --border:rgba(255,255,255,.09);
+  --blue:#2d5be3;--blue2:#1e4acb;
+  --text:#dde4f0;--muted:#7a8fad;--white:#fff;
+  --ok:#27ae60;--warn:#e67e22;--danger:#e74c3c;
+  --nav-bg:rgba(7,16,31,.92);
+  --sidebar-bg:rgba(5,10,22,.98);
+  --input-bg:rgba(255,255,255,.04);
+  --shadow:0 8px 32px rgba(0,0,0,.4)
+}
+[data-theme="light"]{
+  --bg:#f0f4ff;--bg2:#e4ecff;
+  --card:rgba(255,255,255,.85);--card2:rgba(255,255,255,.95);
+  --border:rgba(45,91,227,.15);
+  --blue:#2d5be3;--blue2:#1e4acb;
+  --text:#1a2540;--muted:#5a6a8a;--white:#fff;
+  --ok:#1e8c4e;--warn:#c0620a;--danger:#c0392b;
+  --nav-bg:rgba(240,244,255,.95);
+  --sidebar-bg:rgba(224,232,255,.98);
+  --input-bg:rgba(45,91,227,.06);
+  --shadow:0 8px 32px rgba(45,91,227,.12)
+}
+body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text)}
+@keyframes up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@keyframes rise{0%{transform:translateY(110vh);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(-40px);opacity:0}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+
+/* ── Navbar ── */
+nav{
+  position:fixed;top:0;width:100%;z-index:999;height:64px;
+  padding:0 32px;
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:center;
+  gap:16px;
+  background:rgba(5,10,22,.98);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,255,255,.08)
+}
+/* Logo — left */
+.lgo{display:flex;align-items:center;gap:10px;cursor:pointer;text-decoration:none}
+.lgo img{height:80px;width:auto;max-width:120px;object-fit:contain;display:block;flex-shrink:0;filter:brightness(0) invert(1)}
+[data-theme="light"] .lgo img{filter:none}
+.lgo-nm{font-size:17px;font-weight:700;color:var(--white);display:block;line-height:1.1}
+.lgo-sub{font-size:9px;color:var(--muted);letter-spacing:2.5px;text-transform:uppercase;display:block}
+/* Nav links — center */
+.nl{display:flex;gap:28px;list-style:none;justify-content:center;align-items:center;margin:0}
+.nl li{display:flex}
+.nl button,.nl a{background:none;border:none;color:var(--muted);font-family:'Poppins',sans-serif;font-size:14px;cursor:pointer;transition:color .2s;font-weight:500;text-decoration:none;white-space:nowrap;padding:4px 0;position:relative}
+.nl button:hover,.nl a:hover{color:var(--white)}
+/* Actions — right */
+.na{display:flex;gap:8px;align-items:center;justify-content:flex-end}
+.nb{padding:8px 18px;border-radius:8px;font-family:'Poppins',sans-serif;font-size:13px;cursor:pointer;font-weight:600;transition:all .2s;white-space:nowrap;line-height:1}
+.nb-o{background:transparent;border:1px solid rgba(255,255,255,.18);color:var(--text)}
+.nb-o:hover{border-color:rgba(255,255,255,.35);color:var(--white);background:rgba(255,255,255,.06)}
+.nb-f{background:var(--blue);border:none;color:#fff;box-shadow:0 4px 14px rgba(45,91,227,.35)}
+.nb-f:hover{background:var(--blue2);transform:translateY(-1px);box-shadow:0 6px 20px rgba(45,91,227,.45)}
+/* Theme toggle */
+#themeToggle{background:none;border:1px solid rgba(255,255,255,.15);border-radius:50px;padding:6px 14px;cursor:pointer;color:var(--text);font-size:13px;font-family:'Poppins',sans-serif;display:flex;align-items:center;gap:6px;transition:all .2s;white-space:nowrap}
+#themeToggle:hover{border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.06)}
+
+/* Particles */
+.ptcls{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1}
+.pt{position:absolute;border-radius:50%;animation:rise linear infinite}
+/* Light overrides for nav */
+/* Light theme nav */
+[data-theme="light"] nav{background:rgba(255,255,255,.97);border-bottom:1px solid rgba(45,91,227,.15);box-shadow:0 2px 20px rgba(45,91,227,.08)}
+[data-theme="light"] .lgo-nm{color:#1a2540!important}
+[data-theme="light"] .lgo-sub{color:#5a6a8a!important}
+[data-theme="light"] .nl button,[data-theme="light"] .nl a{color:#3a4a6a!important}
+[data-theme="light"] .nl button:hover,[data-theme="light"] .nl a:hover{color:var(--blue)!important}
+[data-theme="light"] .nb-o{border-color:rgba(45,91,227,.3);color:#1a2540!important}
+[data-theme="light"] .nb-o:hover{background:rgba(45,91,227,.06);border-color:var(--blue);color:var(--blue)!important}
+[data-theme="light"] #themeToggle{border-color:rgba(45,91,227,.25);color:#1a2540!important;background:transparent}
+[data-theme="light"] #themeToggle:hover{background:rgba(45,91,227,.06)}
+/* Light theme body text */
+[data-theme="light"] body{color:#1a2540}
+[data-theme="light"] .muted,[data-theme="light"] [style*="color:var(--muted)"]{color:#5a6a8a!important}

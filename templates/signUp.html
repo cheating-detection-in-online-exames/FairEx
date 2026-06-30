@@ -1,0 +1,665 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--  <meta charset="UTF-8" />-->
+<!--  <meta name="viewport" content="width=device-width, initial-scale=1.0" />-->
+<!--  <title>Sign Up | FairEx</title>-->
+<!--  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">-->
+<!--  <style>-->
+<!--    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }-->
+<!--    :root {-->
+<!--      &#45;&#45;blue: #2d5be3; &#45;&#45;blue2: #1e46c9;-->
+<!--      &#45;&#45;card: rgba(255,255,255,.06); &#45;&#45;border: rgba(255,255,255,.12);-->
+<!--      &#45;&#45;text: #e8eaf0; &#45;&#45;muted: rgba(200,210,235,.55); &#45;&#45;white: #ffffff;-->
+<!--    }-->
+<!--    body { font-family: 'Poppins', sans-serif; background: #050a16; color: var(&#45;&#45;text); min-height: 100vh; }-->
+
+<!--    /* NAV BAR */-->
+<!--    #nav {-->
+<!--      position: fixed; top: 0; left: 0; right: 0; z-index: 100;-->
+<!--      height: 64px; display: flex; align-items: center; justify-content: space-between; padding: 0 28px;-->
+<!--      background: rgba(5,10,22,.82); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);-->
+<!--      border-bottom: 1px solid rgba(255,255,255,.08);-->
+<!--    }-->
+<!--    .lgo { display: flex; align-items: center; gap: 10px; text-decoration: none; }-->
+<!--    .lgo-nm  { display: block; font-size: 16px; font-weight: 700; color: var(&#45;&#45;white); line-height: 1.1; }-->
+<!--    .lgo-sub { display: block; font-size: 10px; font-weight: 500; color: var(&#45;&#45;muted); letter-spacing: 1.5px; text-transform: uppercase; }-->
+<!--    .nl { list-style: none; display: flex; gap: 4px; }-->
+<!--    .nl a { color: var(&#45;&#45;muted); text-decoration: none; font-size: 13px; font-weight: 500; padding: 6px 12px; border-radius: 8px; transition: color .2s, background .2s; }-->
+<!--    .nl a:hover { color: var(&#45;&#45;white); background: rgba(255,255,255,.07); }-->
+<!--    .na { display: flex; align-items: center; gap: 10px; }-->
+<!--    #themeToggle {-->
+<!--      display: flex; align-items: center; gap: 6px; padding: 7px 13px; border-radius: 8px;-->
+<!--      background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);-->
+<!--      color: var(&#45;&#45;muted); font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; transition: all .2s;-->
+<!--    }-->
+<!--    #themeToggle:hover { background: rgba(255,255,255,.1); color: var(&#45;&#45;white); }-->
+<!--    .nb-o {-->
+<!--      padding: 8px 18px; border-radius: 9px; font-family: 'Poppins', sans-serif;-->
+<!--      font-size: 13px; font-weight: 600; cursor: pointer; background: transparent; border: 1px solid var(&#45;&#45;blue); color: var(&#45;&#45;blue); transition: all .2s;-->
+<!--    }-->
+<!--    .nb-o:hover { background: rgba(45,91,227,.1); }-->
+
+<!--    .gc-logo img, .lgo img { filter: brightness(0) invert(1); }-->
+<!--    [data-theme="light"] .gc-logo img, [data-theme="light"] .lgo img { filter: none; }-->
+
+<!--    /* PAGE BACKGROUND */-->
+<!--    .auth-wrap { min-height: calc(100vh - 64px); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; padding: 100px 20px 40px; }-->
+<!--    .auth-bg { position: absolute; inset: 0; background-image: url('https://images.unsplash.com/photo-1606326608606-aa0b62935f2b?w=1400&q=80'); background-size: cover; background-position: center; }-->
+<!--    .auth-ov { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(5,10,22,.94), rgba(8,16,40,.88) 55%, rgba(4,8,18,.96)); }-->
+<!--    .ptcls { position: absolute; inset: 0; z-index: 2; pointer-events: none; }-->
+<!--    .pt { position: absolute; border-radius: 50%; background: rgba(45,91,227,.3); animation: drift linear infinite; }-->
+<!--    @keyframes drift { 0% { transform: translateY(110vh) scale(0); opacity: 0; } 10% { opacity: 1; } 90% { opacity: .5; } 100% { transform: translateY(-10vh) scale(1); opacity: 0; } }-->
+
+<!--    /* FORM CARD */-->
+<!--    .auth-box { position: relative; z-index: 3; width: 100%; max-width: 650px; }-->
+<!--    .gc { background: rgba(6,13,32,.85); -webkit-backdrop-filter: blur(28px); backdrop-filter: blur(28px); border: 1px solid rgba(255,255,255,.1); border-radius: 18px; padding: 38px 40px; box-shadow: 0 15px 35px rgba(0,0,0,0.3); }-->
+
+<!--    .gc-logo { display: flex; justify-content: center; margin-bottom: 12px; }-->
+<!--    .gc-logo img { height: 50px; width: auto; object-fit: contain; }-->
+<!--    .gc-title { font-size: 20px; font-weight: 700; color: var(&#45;&#45;white); text-align: center; margin-bottom: 25px; }-->
+
+<!--    /* SECTIONS & GRID */-->
+<!--    .section-title {-->
+<!--      font-size: 12px; font-weight: 600; color: var(&#45;&#45;blue); text-transform: uppercase; letter-spacing: 1px;-->
+<!--      margin: 24px 0 12px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 8px;-->
+<!--      display: flex; align-items: center; gap: 8px;-->
+<!--    }-->
+<!--    .section-title:first-of-type { margin-top: 0; }-->
+<!--    .section-title svg { width: 16px; height: 16px; }-->
+
+<!--    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }-->
+<!--    .full-width { grid-column: span 2; }-->
+
+<!--    /* INPUTS */-->
+<!--    .fi { width: 100%; background: var(&#45;&#45;card); border: 1px solid var(&#45;&#45;border); border-radius: 8px; padding: 11px 14px; color: var(&#45;&#45;text); font-family: 'Poppins', sans-serif; font-size: 13px; outline: none; transition: all .2s; }-->
+<!--    .fi:focus { border-color: var(&#45;&#45;blue); background: rgba(45,91,227,.07); box-shadow: 0 0 0 3px rgba(45,91,227,.12); }-->
+<!--    .fi::placeholder { color: rgba(255,255,255,.22); }-->
+<!--    select.fi { appearance: none; cursor: pointer; }-->
+<!--    select.fi option { background: #050a16; color: var(&#45;&#45;text); }-->
+
+<!--    /* IDENTITY ZONES */-->
+<!--    .upload-zone { border: 2px dashed rgba(255,255,255,.1); border-radius: 9px; padding: 18px; text-align: center; cursor: pointer; background: rgba(255,255,255,.03); transition: all .2s; display: block; height: 100%; }-->
+<!--    .upload-zone:hover { border-color: rgba(45,91,227,.4); background: rgba(45,91,227,.05); }-->
+<!--    .voice-zone { border: 1px solid rgba(255,255,255,.1); border-radius: 9px; padding: 18px; text-align: center; cursor: pointer; background: rgba(255,255,255,.03); transition: all .2s; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }-->
+<!--    .voice-zone:hover { background: rgba(45,91,227,.07); border-color: rgba(45,91,227,.3); }-->
+<!--    .voice-zone.recording { border-color: #e74c3c; background: rgba(231,76,60,.1); animation: pulse 1.5s infinite; }-->
+<!--    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(231,76,60, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(231,76,60, 0); } 100% { box-shadow: 0 0 0 0 rgba(231,76,60, 0); } }-->
+
+<!--    /* SUBMIT & FOOTER */-->
+<!--    .fb-nx { width: 100%; padding: 14px; background: var(&#45;&#45;blue); border: none; color: white; border-radius: 8px; cursor: pointer; font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 600; margin-top: 25px; transition: all .2s; }-->
+<!--    .fb-nx:hover { background: var(&#45;&#45;blue2); }-->
+<!--    .flink { text-align: center; margin-top: 15px; font-size: 13px; color: var(&#45;&#45;muted); }-->
+<!--    .flink a { color: var(&#45;&#45;blue); cursor: pointer; font-weight: 600; text-decoration: none; }-->
+<!--    .flink a:hover { text-decoration: underline; }-->
+
+<!--    /* FLASH */-->
+<!--    .flash { border-radius: 8px; padding: 10px 14px; font-size: 13px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }-->
+<!--    .flash-danger  { background: rgba(231,76,60,.15); border: 1px solid rgba(231,76,60,.4); color: #ff8a80; }-->
+<!--    .flash-success { background: rgba(39,174,96,.15); border: 1px solid rgba(39,174,96,.4); color: #6dffaa; }-->
+
+<!--    /* LIGHT THEME ADJUSTMENTS */-->
+<!--    [data-theme="light"] { &#45;&#45;card: rgba(45,91,227,.06); &#45;&#45;border: rgba(45,91,227,.2); &#45;&#45;text: #1a2340; &#45;&#45;muted: #6b7a9e; &#45;&#45;white: #1a2340; }-->
+<!--    [data-theme="light"] body { background: #eef1f9; }-->
+<!--    [data-theme="light"] #nav { background: rgba(255,255,255,.9); border-bottom-color: rgba(45,91,227,.12); }-->
+<!--    [data-theme="light"] .nl a { color: var(&#45;&#45;muted); }-->
+<!--    [data-theme="light"] #themeToggle { background: rgba(45,91,227,.06); border-color: rgba(45,91,227,.15); color: var(&#45;&#45;muted); }-->
+<!--    [data-theme="light"] .gc { background: rgba(255,255,255,.92); border-color: rgba(45,91,227,.15); box-shadow: 0 8px 40px rgba(45,91,227,.12); }-->
+<!--    [data-theme="light"] .fi { color: var(&#45;&#45;text); }-->
+<!--    [data-theme="light"] select.fi option { background: #ffffff; }-->
+<!--    [data-theme="light"] .upload-zone, [data-theme="light"] .voice-zone { border-color: rgba(45,91,227,.3); background: rgba(45,91,227,.03); }-->
+
+<!--    @media (max-width: 600px) {-->
+<!--      .form-grid { grid-template-columns: 1fr; }-->
+<!--      .full-width { grid-column: span 1; }-->
+<!--    }-->
+<!--  </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<nav id="nav">-->
+<!--  <a class="lgo" href="{{ url_for('index') }}">-->
+<!--    <img src="{{ url_for('static', filename='assets/logo.png') }}" height="36" id="nav-logo" alt="FairEx" onerror="this.style.display='none'">-->
+<!--    <div><span class="lgo-nm">FairEx</span><span class="lgo-sub">Education</span></div>-->
+<!--  </a>-->
+<!--  <ul class="nl"><li><a href="{{ url_for('index') }}">Home</a></li><li><a href="#">About Us</a></li><li><a href="#">Contact</a></li></ul>-->
+<!--  <div class="na">-->
+<!--    <button id="themeToggle" onclick="toggleTheme()"><span id="themeIcon">☀️</span><span id="themeLabel">Light</span></button>-->
+<!--    <button class="nb-o" onclick="window.location='{{ url_for('login') }}'">Sign In</button>-->
+<!--  </div>-->
+<!--</nav>-->
+
+<!--<div class="auth-wrap">-->
+<!--  <div class="auth-bg"></div>-->
+<!--  <div class="auth-ov"></div>-->
+<!--  <div class="ptcls" id="ptcls"></div>-->
+
+<!--  <div class="auth-box">-->
+<!--    <div class="gc">-->
+<!--      <div class="gc-logo"><img src="{{ url_for('static', filename='assets/logo.png') }}" class="all-logo" alt="FairEx" onerror="this.style.display='none'"></div>-->
+<!--      <div class="gc-title" id="form-title">Student Registration</div>-->
+
+<!--      {% with messages = get_flashed_messages(with_categories=true) %}-->
+<!--        {% if messages %}-->
+<!--          {% for category, message in messages %}-->
+<!--          <div class="flash flash-{{ category }}">-->
+<!--            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>-->
+<!--            {{ message }}-->
+<!--          </div>-->
+<!--          {% endfor %}-->
+<!--        {% endif %}-->
+<!--      {% endwith %}-->
+
+<!--      <div style="display:flex;gap:0;background:var(&#45;&#45;card);border:1px solid var(&#45;&#45;border);border-radius:10px;padding:4px;margin-bottom:18px">-->
+<!--        <button type="button" id="rt-std" onclick="setRole('student')" style="flex:1;padding:8px;border-radius:7px;border:none;font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;cursor:pointer;background:var(&#45;&#45;blue);color:white;transition:all .2s">Student</button>-->
+<!--        <button type="button" id="rt-doc" onclick="setRole('doctor')" style="flex:1;padding:8px;border-radius:7px;border:none;font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;cursor:pointer;background:transparent;color:var(&#45;&#45;muted);transition:all .2s">Doctor</button>-->
+<!--      </div>-->
+
+<!--      <form method="POST" action="/register" enctype="multipart/form-data">-->
+<!--        <input type="hidden" name="role" id="role-input" value="student">-->
+
+<!--        <div class="section-title">-->
+<!--          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>-->
+<!--          Personal Information-->
+<!--        </div>-->
+<!--        <div class="form-grid">-->
+<!--          <input class="fi" type="text" name="username" placeholder="Username" required>-->
+<!--          <input class="fi" type="email" name="email" placeholder="University Email" required>-->
+<!--          <input class="fi" type="password" name="password" placeholder="Password" required>-->
+<!--          <input class="fi" type="text" name="phone" placeholder="Phone Number" required>-->
+<!--        </div>-->
+
+<!--        <div class="section-title">-->
+<!--          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>-->
+<!--          Academic Information-->
+<!--        </div>-->
+<!--        <div class="form-grid">-->
+<!--          <input class="fi full-width" type="text" name="stu_id" id="id-input" placeholder="Student ID" required>-->
+<!--          <select class="fi" name="department" required>-->
+<!--            <option value="" disabled selected>Select Department</option>-->
+<!--            <option>Computer Science</option><option>Engineering</option><option>Medicine</option><option>Business</option>-->
+<!--          </select>-->
+<!--          <select class="fi" name="level" id="level-sel" required>-->
+<!--            <option value="" disabled selected>Select Level</option>-->
+<!--            <option>Level 1</option><option>Level 2</option><option>Level 3</option><option>Level 4</option>-->
+<!--          </select>-->
+<!--        </div>-->
+
+<!--        <div class="section-title">-->
+<!--          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>-->
+<!--          Biometric Data-->
+<!--        </div>-->
+<!--        <div class="form-grid">-->
+
+<!--          <label class="upload-zone">-->
+<!--            <input type="file" name="profile_image" accept="image/*" style="display:none;" onchange="document.getElementById('file-name').innerText = this.files[0].name" required>-->
+<!--            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(140,165,210,.5)" stroke-width="1.5" style="margin-bottom: 8px;"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>-->
+<!--            <div style="font-size:12px;color:var(&#45;&#45;white)" id="file-name">Upload Photo</div>-->
+<!--            <div style="font-size:10px;color:var(&#45;&#45;muted);margin-top:2px">Face ID Required</div>-->
+<!--          </label>-->
+
+<!--          <div class="voice-zone" id="startBtn">-->
+<!--            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(140,165,210,.5)" stroke-width="1.5" style="margin-bottom: 8px;"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>-->
+<!--            <div style="font-size:12px;color:var(&#45;&#45;white)">Record Voice</div>-->
+<!--            <div style="font-size:10px;color:var(&#45;&#45;blue);margin-top:2px" id="countdown">START &#9654;</div>-->
+<!--          </div>-->
+
+<!--        </div>-->
+
+<!--        <audio id="audioPreview" controls style="display:none; width: 100%; height: 35px; margin-top: 15px;"></audio>-->
+<!--        <input type="hidden" name="voice_intro" id="voice_input" required />-->
+
+<!--        <button type="submit" class="fb-nx">Create Account</button>-->
+<!--        <div class="flink">Already have an account? <a href="{{ url_for('login') }}">Login</a></div>-->
+
+<!--      </form>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--  // UI Theme Logic-->
+<!--  function toggleTheme() {-->
+<!--    const isLight = document.documentElement.getAttribute('data-theme') === 'light';-->
+<!--    document.documentElement.setAttribute('data-theme', isLight ? 'dark' : 'light');-->
+<!--    document.getElementById('themeIcon').textContent  = isLight ? '☀️' : '🌙';-->
+<!--    document.getElementById('themeLabel').textContent = isLight ? 'Light' : 'Dark';-->
+<!--  }-->
+
+<!--  // Background Particles-->
+<!--  const wrap = document.getElementById('ptcls');-->
+<!--  for (let i = 0; i < 15; i++) {-->
+<!--    const p = document.createElement('div'); p.className = 'pt';-->
+<!--    const size = Math.random() * 6 + 3;-->
+<!--    p.style.cssText = `width:${size}px; height:${size}px; left:${Math.random() * 100}%; animation-duration:${Math.random() * 14 + 8}s; animation-delay:-${Math.random() * 10}s; opacity:${Math.random() * .4 + .1}`;-->
+<!--    wrap.appendChild(p);-->
+<!--  }-->
+
+<!--  // Role Switcher Logic-->
+<!--  function setRole(role) {-->
+<!--    document.getElementById('role-input').value = role;-->
+<!--    var isDoc = role === 'doctor';-->
+
+<!--    var stdBtn = document.getElementById('rt-std');-->
+<!--    var docBtn = document.getElementById('rt-doc');-->
+<!--    stdBtn.style.background = isDoc ? 'transparent' : 'var(&#45;&#45;blue)';-->
+<!--    stdBtn.style.color = isDoc ? 'var(&#45;&#45;muted)' : 'white';-->
+<!--    docBtn.style.background = isDoc ? '#e74c3c' : 'transparent';-->
+<!--    docBtn.style.color = isDoc ? 'white' : 'var(&#45;&#45;muted)';-->
+
+<!--    document.getElementById('form-title').textContent = isDoc ? 'Doctor Registration' : 'Student Registration';-->
+<!--    document.getElementById('id-input').placeholder = isDoc ? 'Staff ID' : 'Student ID';-->
+
+<!--    var lvlSel = document.getElementById('level-sel');-->
+<!--    lvlSel.innerHTML = isDoc-->
+<!--      ? '<option value="" disabled selected>Select Rank</option><option>Lecturer</option><option>Assistant Professor</option><option>Associate Professor</option><option>Professor</option>'-->
+<!--      : '<option value="" disabled selected>Select Level</option><option>Level 1</option><option>Level 2</option><option>Level 3</option><option>Level 4</option>';-->
+<!--  }-->
+
+<!--  // Audio Recording Logic-->
+<!--  let mediaRecorder;-->
+<!--  let audioChunks = [];-->
+<!--  const RECORD_SECONDS = 8;-->
+<!--  const startBtn = document.getElementById("startBtn");-->
+<!--  const countdownEl = document.getElementById("countdown");-->
+<!--  const voiceInput = document.getElementById("voice_input");-->
+<!--  const audioPreview = document.getElementById("audioPreview");-->
+
+<!--  startBtn.onclick = async () => {-->
+<!--    if (startBtn.classList.contains('recording') || startBtn.style.pointerEvents === 'none') return;-->
+
+<!--    try {-->
+<!--      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });-->
+<!--      mediaRecorder = new MediaRecorder(stream);-->
+<!--      audioChunks = [];-->
+
+<!--      mediaRecorder.ondataavailable = e => audioChunks.push(e.data);-->
+
+<!--      mediaRecorder.onstop = () => {-->
+<!--        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });-->
+
+<!--        const audioUrl = URL.createObjectURL(audioBlob);-->
+<!--        audioPreview.src = audioUrl;-->
+<!--        audioPreview.style.display = "block";-->
+
+<!--        const reader = new FileReader();-->
+<!--        reader.readAsDataURL(audioBlob);-->
+<!--        reader.onloadend = () => { voiceInput.value = reader.result; };-->
+
+<!--        startBtn.classList.remove('recording');-->
+<!--        countdownEl.textContent = "REDO ↺";-->
+<!--        countdownEl.style.color = "#6dffaa";-->
+<!--        startBtn.style.pointerEvents = 'auto';-->
+<!--      };-->
+
+<!--      mediaRecorder.start();-->
+<!--      startBtn.classList.add('recording');-->
+<!--      startBtn.style.pointerEvents = 'none';-->
+<!--      countdownEl.style.color = "var(&#45;&#45;white)";-->
+
+<!--      let secondsLeft = RECORD_SECONDS;-->
+<!--      countdownEl.textContent = `${secondsLeft}s`;-->
+
+<!--      const timer = setInterval(() => {-->
+<!--        secondsLeft -= 1;-->
+<!--        countdownEl.textContent = `${secondsLeft}s`;-->
+<!--        if (secondsLeft <= 0) {-->
+<!--          clearInterval(timer);-->
+<!--          mediaRecorder.stop();-->
+<!--        }-->
+<!--      }, 1000);-->
+
+<!--    } catch (err) {-->
+<!--      alert("Microphone access denied or not available.");-->
+<!--    }-->
+<!--  };-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up | FairEx</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #2d5be3; --blue2: #1e46c9;
+      --card: rgba(255,255,255,.06); --border: rgba(255,255,255,.12);
+      --text: #e8eaf0; --muted: rgba(200,210,235,.55); --white: #ffffff;
+    }
+    body { font-family: 'Poppins', sans-serif; background: #050a16; color: var(--text); min-height: 100vh; }
+
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 64px; display: flex; align-items: center; justify-content: space-between; padding: 0 28px;
+      background: rgba(5,10,22,.82); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .lgo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .lgo-nm  { display: block; font-size: 16px; font-weight: 700; color: var(--white); line-height: 1.1; }
+    .lgo-sub { display: block; font-size: 10px; font-weight: 500; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; }
+    .nl { list-style: none; display: flex; gap: 4px; }
+    .nl a { color: var(--muted); text-decoration: none; font-size: 13px; font-weight: 500; padding: 6px 12px; border-radius: 8px; transition: color .2s, background .2s; }
+    .nl a:hover { color: var(--white); background: rgba(255,255,255,.07); }
+    .na { display: flex; align-items: center; gap: 10px; }
+    #themeToggle {
+      display: flex; align-items: center; gap: 6px; padding: 7px 13px; border-radius: 8px;
+      background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+      color: var(--muted); font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; transition: all .2s;
+    }
+    #themeToggle:hover { background: rgba(255,255,255,.1); color: var(--white); }
+    .nb-o {
+      padding: 8px 18px; border-radius: 9px; font-family: 'Poppins', sans-serif;
+      font-size: 13px; font-weight: 600; cursor: pointer; background: transparent; border: 1px solid var(--blue); color: var(--blue); transition: all .2s;
+    }
+    .nb-o:hover { background: rgba(45,91,227,.1); }
+
+    .gc-logo img, .lgo img { filter: brightness(0) invert(1); }
+    [data-theme="light"] .gc-logo img, [data-theme="light"] .lgo img { filter: none; }
+
+    .auth-wrap { min-height: calc(100vh - 64px); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; padding: 100px 20px 40px; }
+    .auth-bg { position: absolute; inset: 0; background-image: url('https://images.unsplash.com/photo-1606326608606-aa0b62935f2b?w=1400&q=80'); background-size: cover; background-position: center; }
+    .auth-ov { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(5,10,22,.94), rgba(8,16,40,.88) 55%, rgba(4,8,18,.96)); }
+    .ptcls { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+    .pt { position: absolute; border-radius: 50%; background: rgba(45,91,227,.3); animation: drift linear infinite; }
+    @keyframes drift { 0% { transform: translateY(110vh) scale(0); opacity: 0; } 10% { opacity: 1; } 90% { opacity: .5; } 100% { transform: translateY(-10vh) scale(1); opacity: 0; } }
+
+    .auth-box { position: relative; z-index: 3; width: 100%; max-width: 650px; }
+    .gc { background: rgba(6,13,32,.85); -webkit-backdrop-filter: blur(28px); backdrop-filter: blur(28px); border: 1px solid rgba(255,255,255,.1); border-radius: 18px; padding: 38px 40px; box-shadow: 0 15px 35px rgba(0,0,0,0.3); }
+
+    .gc-logo { display: flex; justify-content: center; margin-bottom: 12px; }
+    .gc-logo img { height: 50px; width: auto; object-fit: contain; }
+    .gc-title { font-size: 20px; font-weight: 700; color: var(--white); text-align: center; margin-bottom: 25px; }
+
+    .section-title {
+      font-size: 12px; font-weight: 600; color: var(--blue); text-transform: uppercase; letter-spacing: 1px;
+      margin: 24px 0 12px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 8px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-title:first-of-type { margin-top: 0; }
+    .section-title svg { width: 16px; height: 16px; }
+
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .full-width { grid-column: span 2; }
+
+    .fi { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 11px 14px; color: var(--text); font-family: 'Poppins', sans-serif; font-size: 13px; outline: none; transition: all .2s; }
+    .fi:focus { border-color: var(--blue); background: rgba(45,91,227,.07); box-shadow: 0 0 0 3px rgba(45,91,227,.12); }
+    .fi::placeholder { color: rgba(255,255,255,.22); }
+    select.fi { appearance: none; cursor: pointer; }
+    select.fi option { background: #050a16; color: var(--text); }
+
+    .upload-zone { border: 2px dashed rgba(255,255,255,.1); border-radius: 9px; padding: 18px; text-align: center; cursor: pointer; background: rgba(255,255,255,.03); transition: all .2s; display: block; height: 100%; }
+    .upload-zone:hover { border-color: rgba(45,91,227,.4); background: rgba(45,91,227,.05); }
+    .voice-zone { border: 1px solid rgba(255,255,255,.1); border-radius: 9px; padding: 18px; text-align: center; cursor: pointer; background: rgba(255,255,255,.03); transition: all .2s; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .voice-zone:hover { background: rgba(45,91,227,.07); border-color: rgba(45,91,227,.3); }
+    .voice-zone.recording { border-color: #e74c3c; background: rgba(231,76,60,.1); animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(231,76,60, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(231,76,60, 0); } 100% { box-shadow: 0 0 0 0 rgba(231,76,60, 0); } }
+
+    .fb-nx { width: 100%; padding: 14px; background: var(--blue); border: none; color: white; border-radius: 8px; cursor: pointer; font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 600; margin-top: 25px; transition: all .2s; }
+    .fb-nx:hover { background: var(--blue2); }
+    .fb-nx.doctor-btn { background: #e74c3c; }
+    .fb-nx.doctor-btn:hover { background: #c0392b; }
+    .flink { text-align: center; margin-top: 15px; font-size: 13px; color: var(--muted); }
+    .flink a { color: var(--blue); cursor: pointer; font-weight: 600; text-decoration: none; }
+    .flink a:hover { text-decoration: underline; }
+
+    .flash { border-radius: 8px; padding: 10px 14px; font-size: 13px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .flash-danger  { background: rgba(231,76,60,.15); border: 1px solid rgba(231,76,60,.4); color: #ff8a80; }
+    .flash-success { background: rgba(39,174,96,.15); border: 1px solid rgba(39,174,96,.4); color: #6dffaa; }
+
+    /* === SECTION VISIBILITY CONTROL === */
+    .student-only { transition: opacity .3s, max-height .4s; overflow: hidden; }
+    .student-only.hidden { opacity: 0; max-height: 0 !important; pointer-events: none; margin: 0 !important; padding: 0 !important; }
+
+    [data-theme="light"] { --card: rgba(45,91,227,.06); --border: rgba(45,91,227,.2); --text: #1a2340; --muted: #6b7a9e; --white: #1a2340; }
+    [data-theme="light"] body { background: #eef1f9; }
+    [data-theme="light"] #nav { background: rgba(255,255,255,.9); border-bottom-color: rgba(45,91,227,.12); }
+    [data-theme="light"] .nl a { color: var(--muted); }
+    [data-theme="light"] #themeToggle { background: rgba(45,91,227,.06); border-color: rgba(45,91,227,.15); color: var(--muted); }
+    [data-theme="light"] .gc { background: rgba(255,255,255,.92); border-color: rgba(45,91,227,.15); box-shadow: 0 8px 40px rgba(45,91,227,.12); }
+    [data-theme="light"] .fi { color: var(--text); }
+    [data-theme="light"] select.fi option { background: #ffffff; }
+    [data-theme="light"] .upload-zone, [data-theme="light"] .voice-zone { border-color: rgba(45,91,227,.3); background: rgba(45,91,227,.03); }
+
+    @media (max-width: 600px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .full-width { grid-column: span 1; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <a class="lgo" href="{{ url_for('index') }}">
+    <img src="{{ url_for('static', filename='assets/logo.png') }}" height="36" id="nav-logo" alt="FairEx" onerror="this.style.display='none'">
+    <div><span class="lgo-nm">FairEx</span><span class="lgo-sub">Education</span></div>
+  </a>
+  <ul class="nl"><li><a href="{{ url_for('index') }}">Home</a></li><li><a href="#">About Us</a></li><li><a href="#">Contact</a></li></ul>
+  <div class="na">
+    <button id="themeToggle" onclick="toggleTheme()"><span id="themeIcon">☀️</span><span id="themeLabel">Light</span></button>
+    <button class="nb-o" onclick="window.location='{{ url_for('login') }}'">Sign In</button>
+  </div>
+</nav>
+
+<div class="auth-wrap">
+  <div class="auth-bg"></div>
+  <div class="auth-ov"></div>
+  <div class="ptcls" id="ptcls"></div>
+
+  <div class="auth-box">
+    <div class="gc">
+      <div class="gc-logo"><img src="{{ url_for('static', filename='assets/logo.png') }}" class="all-logo" alt="FairEx" onerror="this.style.display='none'"></div>
+      <div class="gc-title" id="form-title">Student Registration</div>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+          <div class="flash flash-{{ category }}">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            {{ message }}
+          </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <!-- Role Switcher -->
+      <div style="display:flex;gap:0;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:4px;margin-bottom:18px">
+        <button type="button" id="rt-std" onclick="setRole('student')" style="flex:1;padding:8px;border-radius:7px;border:none;font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;cursor:pointer;background:var(--blue);color:white;transition:all .2s">Student</button>
+        <button type="button" id="rt-doc" onclick="setRole('doctor')" style="flex:1;padding:8px;border-radius:7px;border:none;font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;cursor:pointer;background:transparent;color:var(--muted);transition:all .2s">Doctor</button>
+      </div>
+
+      <form method="POST" action="/register" enctype="multipart/form-data">
+        <input type="hidden" name="role" id="role-input" value="student">
+
+        <!-- ===== PERSONAL INFORMATION (shown for BOTH roles) ===== -->
+        <div class="section-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          Personal Information
+        </div>
+        <div class="form-grid">
+          <input class="fi" type="text" name="username" placeholder="Username" required>
+          <input class="fi" type="email" name="email" placeholder="University Email" required>
+          <input class="fi" type="password" name="password" placeholder="Password" required>
+          <input class="fi" type="text" name="phone" placeholder="Phone Number" required>
+        </div>
+
+        <!-- ===== ACADEMIC INFORMATION (students only) ===== -->
+        <div class="student-only" id="section-academic" style="max-height: 300px;">
+          <div class="section-title" style="margin-top:24px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+            Academic Information
+          </div>
+          <div class="form-grid">
+            <input class="fi full-width" type="text" name="stu_id" id="id-input" placeholder="Student ID">
+            <select class="fi" name="department" id="dept-sel">
+              <option value="" disabled selected>Select Department</option>
+              <option value="Computer Science">Computer Science</option>
+      <option value="Scientific Computing">Scientific Computing</option>
+      <option value="Information System">Information System</option>
+      <option value="Computer Systems">Computer Systems</option>
+              <option value="General">General</option>
+            </select>
+            <select class="fi" name="level" id="level-sel">
+              <option value="" disabled selected>Select Level</option>
+              <option>Level 1</option><option>Level 2</option><option>Level 3</option><option>Level 4</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- ===== BIOMETRIC DATA (students only) ===== -->
+        <div class="student-only" id="section-biometric" style="max-height: 400px;">
+          <div class="section-title" style="margin-top:24px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            Biometric Data
+          </div>
+          <div class="form-grid">
+            <label class="upload-zone">
+              <input type="file" name="profile_image" id="profile-image-input" accept="image/*" style="display:none;" onchange="document.getElementById('file-name').innerText = this.files[0].name">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(140,165,210,.5)" stroke-width="1.5" style="margin-bottom: 8px;"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <div style="font-size:12px;color:var(--white)" id="file-name">Upload Photo</div>
+              <div style="font-size:10px;color:var(--muted);margin-top:2px">Face ID Required</div>
+            </label>
+
+            <div class="voice-zone" id="startBtn">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(140,165,210,.5)" stroke-width="1.5" style="margin-bottom: 8px;"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+              <div style="font-size:12px;color:var(--white)">Record Voice</div>
+              <div style="font-size:10px;color:var(--blue);margin-top:2px" id="countdown">START &#9654;</div>
+            </div>
+          </div>
+
+          <audio id="audioPreview" controls style="display:none; width: 100%; height: 35px; margin-top: 15px;"></audio>
+          <input type="hidden" name="voice_intro" id="voice_input" />
+        </div>
+
+        <button type="submit" class="fb-nx" id="submit-btn">Create Account</button>
+        <div class="flink">Already have an account? <a href="{{ url_for('login') }}">Login</a></div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Theme
+  function toggleTheme() {
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    document.documentElement.setAttribute('data-theme', isLight ? 'dark' : 'light');
+    document.getElementById('themeIcon').textContent  = isLight ? '☀️' : '🌙';
+    document.getElementById('themeLabel').textContent = isLight ? 'Light' : 'Dark';
+  }
+
+  // Particles
+  const wrap = document.getElementById('ptcls');
+  for (let i = 0; i < 15; i++) {
+    const p = document.createElement('div'); p.className = 'pt';
+    const size = Math.random() * 6 + 3;
+    p.style.cssText = `width:${size}px; height:${size}px; left:${Math.random() * 100}%; animation-duration:${Math.random() * 14 + 8}s; animation-delay:-${Math.random() * 10}s; opacity:${Math.random() * .4 + .1}`;
+    wrap.appendChild(p);
+  }
+
+  // ============================================================
+  // ROLE SWITCHER — Core logic
+  // ============================================================
+  function setRole(role) {
+    var isDoc = role === 'doctor';
+    document.getElementById('role-input').value = role;
+
+    // Button styles
+    var stdBtn = document.getElementById('rt-std');
+    var docBtn = document.getElementById('rt-doc');
+    stdBtn.style.background = isDoc ? 'transparent' : 'var(--blue)';
+    stdBtn.style.color = isDoc ? 'var(--muted)' : 'white';
+    docBtn.style.background = isDoc ? '#e74c3c' : 'transparent';
+    docBtn.style.color = isDoc ? 'white' : 'var(--muted)';
+
+    // Title
+    document.getElementById('form-title').textContent = isDoc ? 'Doctor Registration' : 'Student Registration';
+
+    // Submit button color
+    var submitBtn = document.getElementById('submit-btn');
+    submitBtn.classList.toggle('doctor-btn', isDoc);
+
+    // ---- SHOW / HIDE student-only sections ----
+    var sections = document.querySelectorAll('.student-only');
+    sections.forEach(function(el) {
+      el.classList.toggle('hidden', isDoc);
+    });
+
+    // ---- Toggle required attributes ----
+    // Academic fields: stu_id, department, level
+    var stuId   = document.getElementById('id-input');
+    var deptSel = document.getElementById('dept-sel');
+    var lvlSel  = document.getElementById('level-sel');
+    var imgInp  = document.getElementById('profile-image-input');
+    var voiceInp = document.getElementById('voice_input');
+
+    if (isDoc) {
+      // Doctor: remove required so form can submit without these fields
+      stuId.removeAttribute('required');
+      deptSel.removeAttribute('required');
+      lvlSel.removeAttribute('required');
+      imgInp.removeAttribute('required');
+      voiceInp.removeAttribute('required');
+    } else {
+      // Student: restore required
+      stuId.setAttribute('required', '');
+      deptSel.setAttribute('required', '');
+      lvlSel.setAttribute('required', '');
+      imgInp.setAttribute('required', '');
+      voiceInp.setAttribute('required', '');
+    }
+  }
+
+  // ============================================================
+  // AUDIO RECORDING
+  // ============================================================
+  let mediaRecorder;
+  let audioChunks = [];
+  const RECORD_SECONDS = 8;
+  const startBtn    = document.getElementById("startBtn");
+  const countdownEl = document.getElementById("countdown");
+  const voiceInput  = document.getElementById("voice_input");
+  const audioPreview = document.getElementById("audioPreview");
+
+  startBtn.onclick = async () => {
+    if (startBtn.classList.contains('recording') || startBtn.style.pointerEvents === 'none') return;
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorder = new MediaRecorder(stream);
+      audioChunks = [];
+      mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+      mediaRecorder.onstop = () => {
+        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+        audioPreview.src = URL.createObjectURL(audioBlob);
+        audioPreview.style.display = "block";
+        const reader = new FileReader();
+        reader.readAsDataURL(audioBlob);
+        reader.onloadend = () => { voiceInput.value = reader.result; };
+        startBtn.classList.remove('recording');
+        countdownEl.textContent = "REDO ↺";
+        countdownEl.style.color = "#6dffaa";
+        startBtn.style.pointerEvents = 'auto';
+      };
+      mediaRecorder.start();
+      startBtn.classList.add('recording');
+      startBtn.style.pointerEvents = 'none';
+      countdownEl.style.color = "var(--white)";
+      let secondsLeft = RECORD_SECONDS;
+      countdownEl.textContent = `${secondsLeft}s`;
+      const timer = setInterval(() => {
+        secondsLeft -= 1;
+        countdownEl.textContent = `${secondsLeft}s`;
+        if (secondsLeft <= 0) { clearInterval(timer); mediaRecorder.stop(); }
+      }, 1000);
+    } catch (err) {
+      alert("Microphone access denied or not available.");
+    }
+  };
+</script>
+</body>
+</html>
+
